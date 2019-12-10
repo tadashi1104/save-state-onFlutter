@@ -2,7 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'list_page.dart';
 
-void main() => runApp(ListPage());
+void main() => runApp(MainPage());
+
+class MainPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'save-sate',
+      theme: ThemeData(primarySwatch: Colors.red,),
+      home: ListPage()
+    );
+  }
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
