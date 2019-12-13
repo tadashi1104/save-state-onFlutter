@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:save_state_on_flutter/list_page.dart';
+
+import 'list_page.dart';
+import 'calendar_page.dart';
 
 class MyDrawer extends StatefulWidget {
   @override
@@ -35,6 +37,15 @@ class _MyDrawer extends State<MyDrawer> {
           ListTile(
             title: Text("Calendar"),
             trailing: Icon(Icons.arrow_forward),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CalendarPage();
+                  },
+                ),
+              );
+            },
           ),
         ],
       ),

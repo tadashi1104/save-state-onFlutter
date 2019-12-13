@@ -16,7 +16,7 @@ class _ListPage extends State<ListPage> {
     return Scaffold(
       drawer: MyDrawer(),
       appBar: MyAppBar(
-        title: 'ListPage',
+        title: 'List',
       ),
       body: new Builder(builder: (BuildContext context) {
         return new CustomScrollView(
