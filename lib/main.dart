@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'list_page.dart';
 
-void main() => runApp(MainPage());
+void main() => runApp(new MainPage());
 
 class MainPage extends StatelessWidget {
+
+  MainPage() {
+    initializeDateFormatting('ja_JP');
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
