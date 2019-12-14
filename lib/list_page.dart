@@ -23,6 +23,11 @@ class _ListPage extends State<ListPage> {
           slivers: _buildSlivers(context),
         );
       }),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red,
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
     );
   }
 

@@ -12,8 +12,7 @@ import 'appbar.dart';
 const String Language = 'ja_JP';
 
 class CalendarPage extends StatefulWidget {
-
-  CalendarPage(){
+  CalendarPage() {
     initializeDateFormatting('ja_JP');
   }
 
@@ -27,16 +26,16 @@ class _CalendarPage extends State<CalendarPage> {
   String _currentMonth = DateFormat.yMMM(Language).format(DateTime.now());
   DateTime _targetDateTime = DateTime.now();
 //  List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
-  static Widget _eventIcon = new Container(
-    decoration: new BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(1000)),
-        border: Border.all(color: Colors.red, width: 5.0)),
-    child: new Icon(
-      Icons.access_alarm,
-      color: Colors.red,
-    ),
-  );
+  // static Widget _eventIcon = new Container(
+  //   decoration: new BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.all(Radius.circular(1000)),
+  //       border: Border.all(color: Colors.red, width: 5.0)),
+  //   child: new Icon(
+  //     Icons.access_alarm,
+  //     color: Colors.red,
+  //   ),
+  // );
 
   // EventList<Event> _markedDateMap = new EventList<Event>(
   //   events: {
@@ -66,7 +65,8 @@ class _CalendarPage extends State<CalendarPage> {
   //   },
   // );
 
-  CalendarCarousel _calendarCarousel, _calendarCarouselNoHeader;
+  // CalendarCarousel _calendarCarousel, _calendarCarouselNoHeader;
+  CalendarCarousel _calendarCarouselNoHeader;
 
   @override
   void initState() {
@@ -225,73 +225,79 @@ class _CalendarPage extends State<CalendarPage> {
     );
 
     return Scaffold(
-        drawer: MyDrawer(),
-        appBar: MyAppBar(
-          title: 'Calendar',
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(
-                  top: 12.0,
-                  bottom: 16.0,
-                  left: 16.0,
-                  right: 16.0,
-                ),
-                child: new Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: Text(
-                      _currentMonth,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                      ),
-                    )),
-                    FlatButton(
-                      child: Text('PREV'),
-                      onPressed: () {
-                        setState(() {
-                          _targetDateTime = DateTime(
-                              _targetDateTime.year, _targetDateTime.month - 1);
-                          _currentMonth =
-                              DateFormat.yMMM(Language).format(_targetDateTime);
-                        });
-                      },
+      drawer: MyDrawer(),
+      appBar: MyAppBar(
+        title: 'Calendar',
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(
+                top: 12.0,
+                bottom: 16.0,
+                left: 16.0,
+                right: 16.0,
+              ),
+              child: new Row(
+                children: <Widget>[
+                  Expanded(
+                      child: Text(
+                    _currentMonth,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
                     ),
-                    FlatButton(
-                      child: Text('NEXT'),
-                      onPressed: () {
-                        setState(() {
-                          _targetDateTime = DateTime(
-                              _targetDateTime.year, _targetDateTime.month + 1);
-                          _currentMonth =
-                              DateFormat.yMMM(Language).format(_targetDateTime);
-                        });
-                      },
-                    )
-                  ],
-                ),
+                  )),
+                  FlatButton(
+                    child: Text('PREV'),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month - 1);
+                        _currentMonth =
+                            DateFormat.yMMM(Language).format(_targetDateTime);
+                      });
+                    },
+                  ),
+                  FlatButton(
+                    child: Text('NEXT'),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month + 1);
+                        _currentMonth =
+                            DateFormat.yMMM(Language).format(_targetDateTime);
+                      });
+                    },
+                  )
+                ],
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 0.0),
-                child: _calendarCarouselNoHeader,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 0.0),
-                height: 320,
-                child: new Builder(builder: (BuildContext context) {
-                  return new CustomScrollView(
-                    slivers: _buildSlivers(context),
-                  );
-                }),
-              )
-            ],
-          ),
-        ));
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 0.0),
+              child: _calendarCarouselNoHeader,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 0.0),
+              height: 320,
+              child: new Builder(builder: (BuildContext context) {
+                return new CustomScrollView(
+                  slivers: _buildSlivers(context),
+                );
+              }),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red,
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
+    );
   }
 
   List<Widget> _buildSlivers(BuildContext context) {

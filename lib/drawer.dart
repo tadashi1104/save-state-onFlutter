@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'list_page.dart';
 import 'calendar_page.dart';
+import 'register_page.dart';
 
 class MyDrawer extends StatefulWidget {
   @override
@@ -25,6 +26,7 @@ class _MyDrawer extends State<MyDrawer> {
             title: Text("List"),
             trailing: Icon(Icons.arrow_forward),
             onTap: () {
+              Navigator.of(context).pop();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
@@ -38,10 +40,25 @@ class _MyDrawer extends State<MyDrawer> {
             title: Text("Calendar"),
             trailing: Icon(Icons.arrow_forward),
             onTap: () {
+              Navigator.of(context).pop();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
                     return CalendarPage();
+                  },
+                ),
+              );
+            },
+          ),
+          ListTile(
+            title: Text("Register"),
+            trailing: Icon(Icons.arrow_forward),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return RegisterPage();
                   },
                 ),
               );
