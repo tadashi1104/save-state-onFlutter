@@ -37,7 +37,11 @@ class _ReigsterAppBar extends State<ReigsterAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(widget.title),
+      // leading: new IconButton(
+      //   icon: new Icon(Icons.arrow_back, color: Colors.white),
+      //   onPressed: () => Navigator.of(context).pop(),
+      // ),
+      title: Text('Register'),
       actions: <Widget>[
         IconButton(
           icon: Icon(
