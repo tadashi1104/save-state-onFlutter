@@ -11,7 +11,7 @@ class _RegisterPage extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      // drawer: MyDrawer(),
       appBar: ReigsterAppBar(
         title: 'Register',
       ),

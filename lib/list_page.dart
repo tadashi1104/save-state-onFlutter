@@ -13,22 +13,11 @@ class ListPage extends StatefulWidget {
 class _ListPage extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: MyDrawer(),
-      appBar: MyAppBar(
-        title: 'List',
-      ),
-      body: new Builder(builder: (BuildContext context) {
-        return new CustomScrollView(
-          slivers: _buildSlivers(context),
-        );
-      }),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red,
-        child: Icon(Icons.add),
-        onPressed: () {},
-      ),
-    );
+    return new Builder(builder: (BuildContext context) {
+      return new CustomScrollView(
+        slivers: _buildSlivers(context),
+      );
+    });
   }
 
   List<Widget> _buildSlivers(BuildContext context) {

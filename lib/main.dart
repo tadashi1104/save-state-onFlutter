@@ -1,92 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:save_state_on_flutter/calendar_page.dart';
+import 'package:save_state_on_flutter/register_page.dart';
 
+import 'appbar.dart';
+import 'drawer.dart';
 import 'list_page.dart';
 
-void main() => runApp(new MainPage());
+void main() => runApp(new Main());
 
-class MainPage extends StatelessWidget {
-
-  MainPage() {
+class Main extends StatelessWidget {
+  Main() {
     initializeDateFormatting('ja_JP');
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'save-sate',
-      theme: ThemeData(primarySwatch: Colors.red,),
-      home: ListPage()
-    );
+        title: 'save-sate',
+        theme: ThemeData(
+          primarySwatch: Colors.red,
+        ),
+        home: MainPage());
   }
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+const String Language = 'ja_JP';
+
+class MainPage extends StatefulWidget {
+  MainPage() {
+    initializeDateFormatting('ja_JP');
   }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MainPage createState() => _MainPage();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MainPage extends State<MainPage> {
+  int _currentIndex = 0;
+  List<String> _titles = List();
+  List<Widget> _pages = List();
 
-  void _incrementCounter() {
+  Widget _getCurrentPage() => _pages[_currentIndex];
+  String _getCurrentTitle() => _titles[_currentIndex];
+
+  @override
+  void initState() {
     setState(() {
-      _counter++;
+      _currentIndex = 0;
+
+      _pages.add(CalendarPage());
+      _pages.add(ListPage());
+      _titles.add('Calendar');
+      _titles.add('List');
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+      // drawer: MyDrawer(),
+      appBar: MyAppBar(
+        title: _getCurrentTitle(),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+      body: _getCurrentPage(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          setState(
+            () {
+              _currentIndex = index;
+            },
+          );
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            title: Text('Calendar'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            title: Text('List'),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        backgroundColor: Colors.red,
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return RegisterPage();
+              },
+              fullscreenDialog: true
+            ),
+          );
+        },
+      ),
     );
   }
 }
