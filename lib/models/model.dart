@@ -9,6 +9,9 @@ class States {
   bool ateLunch;
   bool ateDinner;
   bool ateSnack;
+  List<GoodPoints> goodPoints;
+  List<BadPoints> badPoints;
+  List<Others> oterhs;
 }
 
 class GoodPoints {

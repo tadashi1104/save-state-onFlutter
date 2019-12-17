@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'drawer.dart';
 import 'appbar.dart';
 
 class RegisterPage extends StatefulWidget {
