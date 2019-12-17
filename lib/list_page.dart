@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:intl/intl.dart';
 
-import 'drawer.dart';
-import 'appbar.dart';
-
 class ListPage extends StatefulWidget {
   @override
   _ListPage createState() => _ListPage();
