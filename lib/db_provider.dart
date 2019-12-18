@@ -1,12 +1,13 @@
-import 'dart:async';
+
 import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:save_state_on_flutter/models/model.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBProvider {
-    DBProvider._();
+  DBProvider._();
 
   static final DBProvider db = DBProvider._();
 
@@ -51,5 +52,23 @@ class DBProvider {
     });
   }
 
+  Future<int> insert(String table, BaseTable item) async {
+    final Database db = await database;
+    return db.insert(
+      table,
+      item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> updateMemo(Memo memo) async {
+  final db = await database;
+  await db.update(
+    'memo',
+    memo.toMap(),
+    where: "id = ?",
+    whereArgs: [memo.id],
+    conflictAlgorithm: ConflictAlgorithm.fail,
+  );
 
 }
