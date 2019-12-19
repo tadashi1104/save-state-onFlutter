@@ -61,14 +61,18 @@ class DBProvider {
     );
   }
 
-  Future<void> updateMemo(Memo memo) async {
-  final db = await database;
-  await db.update(
-    'memo',
-    memo.toMap(),
-    where: "id = ?",
-    whereArgs: [memo.id],
-    conflictAlgorithm: ConflictAlgorithm.fail,
-  );
+  Future<int> updateMemo(String table, String key, BaseTable item) async {
+    final db = await database;
+    var keys = item.getPrimariyKey();
+    String condition;
+    keys.forEach( (key, value) => {condition = "${condition}${condition == null ? null : ","} = ?"} );
+    await db.update(
+      table,
+      item.toMap(),
+      where: condition,
+      whereArgs: [keys],
+      conflictAlgorithm: ConflictAlgorithm.fail,
+    );
+  }
 
 }
