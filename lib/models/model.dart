@@ -2,7 +2,7 @@
 import 'dart:core';
 
 class BaseTable {
-  Map<String, dynamic> getPrimariyKey() => {};
+  Map<String, dynamic> getPrimaryKey() => {};
   Map<String, dynamic> toMap() => {};
 }
 
