@@ -1,12 +1,8 @@
 
 import 'dart:core';
+import 'dart:convert';
 
-class BaseTable {
-  Map<String, dynamic> getPrimaryKey() => {};
-  Map<String, dynamic> toMap() => {};
-}
-
-class States implements BaseTable {
+class States {
   int id;
   int feeling;
   int condition;
@@ -16,11 +12,32 @@ class States implements BaseTable {
   bool ateSnack;
   List<GoodPoints> goodPoints;
   List<BadPoints> badPoints;
-  List<Others> oterhs;
+  List<Others> others;
 
-  Map<String, dynamic> getPrimaryKey() => {
-    "id": id,
-  };
+  States({
+    this.id,
+    this.feeling,
+    this.condition,
+    this.ateBreakfast,
+    this.ateLunch,
+    this.ateDinner,
+    this.ateSnack,
+    this.goodPoints,
+    this.badPoints,
+    this.others,
+  });
+
+  factory States.fromMap(Map<String, dynamic> json) => new States(
+    id: json["id"],
+    feeling: json["feeling"],
+    condition: json["condition"],
+    ateBreakfast: json["ateBreakfast"],
+    ateLunch: json["ateLunch"],
+    ateSnack: json["ateSnack"],
+    goodPoints: json["goodPoints"],
+    badPoints: json["badPoints"],
+    others: json["others"],
+  );
   
   Map<String, dynamic> toMap() => {
     "id": id,
@@ -30,10 +47,30 @@ class States implements BaseTable {
     "ateLunch": ateLunch,
     "ateDinner": ateDinner,
     "ateSnack": ateSnack,
+    "goodPoints" :goodPoints,
+    "badPoints" :badPoints,
+    "others" :others
+  };
+
+  Map<String, dynamic> getPrimaryKey() => {
+    "id": id,
   };
 }
 
-class GoodPoints implements BaseTable {
+class StatesConvert {
+
+  States fromJson(String str) {
+    final jsonData = json.decode(str);
+    return States.fromMap(jsonData);
+  }
+
+  String toJson(States data) {
+    final dyn = data.toMap();
+    return json.encode(dyn);
+  }
+}
+
+class GoodPoints {
   int id;
   int stateId;
   String point;
@@ -49,7 +86,7 @@ class GoodPoints implements BaseTable {
   };
 }
 
-class BadPoints implements BaseTable {
+class BadPoints {
   int id;
   int stateId;
   String point;
@@ -65,7 +102,7 @@ class BadPoints implements BaseTable {
   };
 }
 
-class Others implements BaseTable {
+class Others {
   int id;
   int stateId;
   String other;
