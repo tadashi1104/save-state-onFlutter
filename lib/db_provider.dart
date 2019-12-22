@@ -61,11 +61,11 @@ class DBProvider {
     );
   }
 
-  Future<int> updateMemo(String table, String key, BaseTable item) async {
+  Future<int> update(String table, String key, BaseTable item) async {
     final db = await database;
-    var keys = item.getPrimariyKey();
+    var keys = item.getPrimaryKey();
     String condition;
-    keys.forEach( (key, value) => {condition = "${condition}${condition == null ? null : ","} = ?"} );
+    keys.forEach( (key, value) => {condition = "$condition${condition == null ? null : ","} = ?"} );
     await db.update(
       table,
       item.toMap(),
@@ -74,5 +74,11 @@ class DBProvider {
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
   }
+
+  T getAll<T>(String table) async {
+    final db = await database;
+    var res = await db.query("Client", where: "id = ?", whereArgs: [id]);
+    return res.isNotEmpty ? 
+
 
 }
