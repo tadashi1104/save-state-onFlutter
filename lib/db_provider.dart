@@ -20,12 +20,12 @@ class DBProvider {
     return _database;
   }
 
-  initDB() async {
+  dynamic initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "TestDB.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE States ("
+      db.execute("CREATE TABLE States ("
           "id INTEGER PRIMARY KEY,"
           "feering INTEGER,"
           "condition INTEGER,"
@@ -34,17 +34,17 @@ class DBProvider {
           "ateDinner BIT,"
           "ateSnack BIT,"
           ")");
-      await db.execute("CREATE TABLE GoodPoints ("
+      db.execute("CREATE TABLE GoodPoints ("
           "id INTEGER PRIMARY KEY,"
           "stateId INTEGER,"
           "point TEXT"
           ")");
-      await db.execute("CREATE TABLE BadPoints ("
+      db.execute("CREATE TABLE BadPoints ("
           "id INTEGER PRIMARY KEY,"
           "stateId INTEGER,"
           "point TEXT"
           ")");
-      await db.execute("CREATE TABLE Others ("
+      db.execute("CREATE TABLE Others ("
           "id INTEGER PRIMARY KEY,"
           "stateId INTEGER,"
           "other TEXT"
@@ -52,33 +52,68 @@ class DBProvider {
     });
   }
 
-  Future<int> insert(String table, BaseTable item) async {
+  Future<void> insertState(States item) async {
     final Database db = await database;
-    return db.insert(
-      table,
+    var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM States");
+    item.id = max.length == 0 ? 1 : max.first["id"];
+    db.insert(
+      "States",
+      item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+
+    item.goodPoints.forEach((goodPoint) => {insertGoodPoint(goodPoint, item.id)});
+    item.badPoints.forEach((badPoint) => {insertBadPoint(badPoint, item.id)});
+    item.others.forEach((other) => {insertOther(other, item.id)});
+  }
+
+  Future<void> insertGoodPoint(GoodPoints item, int stateId) async {
+    final Database db = await database;
+    var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM GoodPoints Where stateId = ?",
+        [stateId]);
+    item.id = max.length == 0 ? 1 : max.first["id"];
+    item.stateId = stateId;
+    db.insert(
+      "GoodPoints",
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  Future<int> update(String table, String key, BaseTable item) async {
-    final db = await database;
-    var keys = item.getPrimaryKey();
-    String condition;
-    keys.forEach( (key, value) => {condition = "$condition${condition == null ? null : ","} = ?"} );
-    await db.update(
-      table,
+  Future<void> insertBadPoint(BadPoints item, int stateId) async {
+    final Database db = await database;
+    var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM BadPoints Where stateId = ?",
+        [stateId]);
+    item.id = max.length == 0 ? 1 : max.first["id"];
+    item.stateId = stateId;
+    db.insert(
+      "BadPonts",
       item.toMap(),
-      where: condition,
-      whereArgs: [keys],
-      conflictAlgorithm: ConflictAlgorithm.fail,
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  T getAll<T>(String table) async {
+  Future<void> insertOther(Others item, int stateId) async {
+    final Database db = await database;
+    var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM Others Where stateId = ?",
+        [stateId]);
+    item.id = max.length == 0 ? 1 : max.first["id"];
+    item.stateId = stateId;
+    db.insert(
+      "Others",
+      item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> updateState(States item, String id) async {
     final db = await database;
-    var res = await db.query("Client", where: "id = ?", whereArgs: [id]);
-    return res.isNotEmpty ? 
-
-
+    db.update(
+      "States",
+      item.toMap(),
+      where: "id = ?",
+      whereArgs: [id],
+      conflictAlgorithm: ConflictAlgorithm.fail,
+    );
+  }
 }
