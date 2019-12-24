@@ -106,50 +106,67 @@ class DBProvider {
     );
   }
 
-  Future<void> updateState(States state, String id) async {
+  Future<void> updateState(States state) async {
     final db = await database;
     db.update(
       "States",
       state.toMap(),
       where: "id = ?",
-      whereArgs: [id],
+      whereArgs: [state.id],
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
 
     int stateId = state.id;
-    state.goodPoints.forEach((goodPoint) => {insertGoodPoint(goodPoint, state.id)});
-    state.badPoints.forEach((badPoint) => {insertBadPoint(badPoint, state.id)});
-    state.others.forEach((other) => {insertOther(other, state.id)});
-
+    state.goodPoints.forEach((goodPoint) => {
+      if (goodPoint.id == null) {
+        insertGoodPoint(goodPoint, stateId)
+      } else {
+        updateGoodPoint(goodPoint)
+      }
+    });
+    state.badPoints.forEach((badPoint) => {
+      if (badPoint.id == null) {
+        insertBadPoint(badPoint, stateId)
+      } else {
+        updateBadPoint(badPoint)
+      }
+    });
+    state.others.forEach((other) => {
+      if (other.id == null) {
+        insertOther(other, stateId)
+      } else {
+        updateOther(other)
+      } 
+    });
   }
 
-  Future<void> updateGoodPoint(GoodPoints goodPoint, int id) async {
+  Future<void> updateGoodPoint(GoodPoints goodPoint) async {
     final Database db = await database;
     db.update(
       "GoodPoints",
       goodPoint.toMap(),
       where: "id = ?",
-      whereArgs: [id]
+      whereArgs: [goodPoint.id]
     );
   }
 
-  Future<void> updateBadPoint(BadPoints badPoint, int id) async {
+  Future<void> updateBadPoint(BadPoints badPoint) async {
     final Database db = await database;
     db.update(
       "BadPoints",
       badPoint.toMap(),
       where: "id = ?",
-      whereArgs: [id]
+      whereArgs: [badPoint.id]
     );
   }
 
-  Future<void> updateOther(Others other, int id) async {
+  Future<void> updateOther(Others other) async {
     final Database db = await database;
     db.update(
       "Others",
       other.toMap(),
       where: "id = ?",
-      whereArgs: [id]
+      whereArgs: [other.id]
     );
   }
 }
