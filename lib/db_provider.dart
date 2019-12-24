@@ -52,19 +52,19 @@ class DBProvider {
     });
   }
 
-  Future<void> insertState(States item) async {
+  Future<void> insertState(States state) async {
     final Database db = await database;
     var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM States");
-    item.id = max.length == 0 ? 1 : max.first["id"];
+    state.id = max.length == 0 ? 1 : max.first["id"];
     db.insert(
       "States",
-      item.toMap(),
+      state.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    item.goodPoints.forEach((goodPoint) => {insertGoodPoint(goodPoint, item.id)});
-    item.badPoints.forEach((badPoint) => {insertBadPoint(badPoint, item.id)});
-    item.others.forEach((other) => {insertOther(other, item.id)});
+    state.goodPoints.forEach((goodPoint) => {insertGoodPoint(goodPoint, state.id)});
+    state.badPoints.forEach((badPoint) => {insertBadPoint(badPoint, state.id)});
+    state.others.forEach((other) => {insertOther(other, state.id)});
   }
 
   Future<void> insertGoodPoint(GoodPoints item, int stateId) async {
@@ -106,14 +106,50 @@ class DBProvider {
     );
   }
 
-  Future<void> updateState(States item, String id) async {
+  Future<void> updateState(States state, String id) async {
     final db = await database;
     db.update(
       "States",
-      item.toMap(),
+      state.toMap(),
       where: "id = ?",
       whereArgs: [id],
       conflictAlgorithm: ConflictAlgorithm.fail,
+    );
+
+    int stateId = state.id;
+    state.goodPoints.forEach((goodPoint) => {insertGoodPoint(goodPoint, state.id)});
+    state.badPoints.forEach((badPoint) => {insertBadPoint(badPoint, state.id)});
+    state.others.forEach((other) => {insertOther(other, state.id)});
+
+  }
+
+  Future<void> updateGoodPoint(GoodPoints goodPoint, int id) async {
+    final Database db = await database;
+    db.update(
+      "GoodPoints",
+      goodPoint.toMap(),
+      where: "id = ?",
+      whereArgs: [id]
+    );
+  }
+
+  Future<void> updateBadPoint(BadPoints badPoint, int id) async {
+    final Database db = await database;
+    db.update(
+      "BadPoints",
+      badPoint.toMap(),
+      where: "id = ?",
+      whereArgs: [id]
+    );
+  }
+
+  Future<void> updateOther(Others other, int id) async {
+    final Database db = await database;
+    db.update(
+      "Others",
+      other.toMap(),
+      where: "id = ?",
+      whereArgs: [id]
     );
   }
 }
