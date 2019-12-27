@@ -135,8 +135,8 @@ class DBProvider {
       if (other.id == null) {
         insertOther(other, stateId)
       } else {
-        updateOther(other)
-      } 
+        updateOther(other) 
+      }
     });
   }
 
