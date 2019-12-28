@@ -43,12 +43,11 @@ class _ReigsterAppBar extends State<ReigsterAppBar> {
       // ),
       title: Text('Register'),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(
-            Icons.save_alt,
-            color: Colors.white,
-          ),
+        FlatButton(
+          textColor: Colors.white,
           onPressed: () {},
+          child: Text("登録"),
+          shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
         )
       ],
     );
