@@ -58,12 +58,11 @@ class _RegisterPage extends State<RegisterPage> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_up,
-                      color: Colors.orange[700],
-                    ),
+                  StateIcon(
+                    type: 'feeling',
+                    value: 5,
+                    color: Colors.orange[700],
+                    icon: Icons.thumb_up,
                   ),
                   Text(
                     '最高',
@@ -87,12 +86,14 @@ class _RegisterPage extends State<RegisterPage> {
                 ],
               ),
               Column(
+                mainAxisSize: MainAxisSize.values[1],
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumbs_up_down,
-                      color: Colors.green,
+                    child: IconButton(
+                      icon: Icon(Icons.thumbs_up_down, color: Colors.green,),
+                      color: Colors.green, 
+                      onPressed: () {}, 
                     ),
                   ),
                   Text(
@@ -663,3 +664,39 @@ class _RegisterPage extends State<RegisterPage> {
     );
   }
 }
+
+class StateIcon extends StatefulWidget {
+  final String type;
+  final int value;
+  final Color color;
+  final IconData icon;
+  StateIcon({
+    Key key, @required this.type, @required this.value, @required this.color, @required this.icon
+    }) : super(key: key);
+
+  @override
+  _StateIcon createState() => _StateIcon();
+}
+
+class _StateIcon extends State<StateIcon> {
+
+  Color _color = Colors.grey;
+
+  _setStateModel() {
+    _color = widget.color;
+    _state['feeling'] = widget.value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(10.0),
+      child: IconButton(
+        icon: Icon(widget.icon, color: _color,),
+        onPressed: _setStateModel(), 
+      ),
+    );
+  }
+}
+
+Map<String, dynamic> _state = new Map<String, dynamic>();
