@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'appbar.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -7,6 +9,18 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPage extends State<RegisterPage> {
+
+  int _currentFeeling;
+  void _handleFeeling(int e) => setState(() {_currentFeeling = e;}); 
+  int _currentCondition;
+  void _handleCondition(int e) => setState(() {_currentCondition = e;}); 
+
+  @override
+  void initState() {
+    super.initState();
+    _state = new Map<String, dynamic>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,9 +74,11 @@ class _RegisterPage extends State<RegisterPage> {
                 children: <Widget>[
                   StateIcon(
                     type: 'feeling',
+                    groupValue: _currentFeeling,
                     value: 5,
                     color: Colors.orange[700],
                     icon: Icons.thumb_up,
+                    onChanged: _handleFeeling,
                   ),
                   Text(
                     '最高',
@@ -72,12 +88,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_up,
-                      color: Colors.orange,
-                    ),
+                  StateIcon(
+                    type: 'feeling',
+                    groupValue: _currentFeeling,
+                    value: 4,
+                    color: Colors.orange,
+                    icon: Icons.thumb_up,
+                    onChanged: _handleFeeling,
                   ),
                   Text(
                     '良い',
@@ -88,13 +105,13 @@ class _RegisterPage extends State<RegisterPage> {
               Column(
                 mainAxisSize: MainAxisSize.values[1],
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: IconButton(
-                      icon: Icon(Icons.thumbs_up_down, color: Colors.green,),
-                      color: Colors.green, 
-                      onPressed: () {}, 
-                    ),
+                  StateIcon(
+                    type: 'feeling',
+                    groupValue: _currentFeeling,
+                    value: 3,
+                    color: Colors.green,
+                    icon: Icons.thumbs_up_down,
+                    onChanged: _handleFeeling,
                   ),
                   Text(
                     '普通',
@@ -104,12 +121,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_down,
-                      color: Colors.blue,
-                    ),
+                  StateIcon(
+                    type: 'feeling',
+                    groupValue: _currentFeeling,
+                    value: 2,
+                    color: Colors.blue,
+                    icon: Icons.thumb_down,
+                    onChanged: _handleFeeling,
                   ),
                   Text(
                     '悪い',
@@ -119,12 +137,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_down,
-                      color: Colors.blue[800],
-                    ),
+                  StateIcon(
+                    type: 'feeling',
+                    groupValue: _currentFeeling,
+                    value: 1,
+                    color: Colors.blue[800],
+                    icon: Icons.thumb_down,
+                    onChanged: _handleFeeling,
                   ),
                   Text(
                     '最低',
@@ -166,12 +185,13 @@ class _RegisterPage extends State<RegisterPage> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_up,
-                      color: Colors.orange[700],
-                    ),
+                  StateIcon(
+                    type: 'condition',
+                    groupValue: _currentCondition,
+                    value: 5,
+                    color: Colors.orange[700],
+                    icon: Icons.thumb_up,
+                    onChanged: _handleCondition,
                   ),
                   Text(
                     '最高',
@@ -181,12 +201,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_up,
-                      color: Colors.orange,
-                    ),
+                  StateIcon(
+                    type: 'condition',
+                    groupValue: _currentCondition,
+                    value: 4,
+                    color: Colors.orange,
+                    icon: Icons.thumb_up,
+                    onChanged: _handleCondition,
                   ),
                   Text(
                     '良い',
@@ -196,12 +217,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumbs_up_down,
-                      color: Colors.green,
-                    ),
+                  StateIcon(
+                    type: 'condition',
+                    groupValue: _currentCondition,
+                    value: 3,
+                    color: Colors.green,
+                    icon: Icons.thumbs_up_down,
+                    onChanged: _handleCondition,
                   ),
                   Text(
                     '普通',
@@ -211,12 +233,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_down,
-                      color: Colors.blue,
-                    ),
+                  StateIcon(
+                    type: 'condition',
+                    groupValue: _currentCondition,
+                    value: 2,
+                    color: Colors.blue,
+                    icon: Icons.thumb_down,
+                    onChanged: _handleCondition,
                   ),
                   Text(
                     '悪い',
@@ -226,12 +249,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_down,
-                      color: Colors.blue[800],
-                    ),
+                  StateIcon(
+                    type: 'condition',
+                    groupValue: _currentCondition,
+                    value: 1,
+                    color: Colors.blue[800],
+                    icon: Icons.thumb_down,
+                    onChanged: _handleCondition,
                   ),
                   Text(
                     '最低',
@@ -665,26 +689,31 @@ class _RegisterPage extends State<RegisterPage> {
   }
 }
 
-class StateIcon extends StatefulWidget {
+class StateIcon<T> extends StatefulWidget {
   final String type;
-  final int value;
+  final dynamic value;
+  final dynamic groupValue;
   final Color color;
   final IconData icon;
+  final ValueChanged<T> onChanged;
   StateIcon({
-    Key key, @required this.type, @required this.value, @required this.color, @required this.icon
-    }) : super(key: key);
+    Key key, @required this.type, 
+    @required this.value, @required this.groupValue, 
+    @required this.color, @required this.icon, this.onChanged
+  }) : super(key: key);
 
   @override
-  _StateIcon createState() => _StateIcon();
+  _StateIcon<T> createState() => _StateIcon<T>();
 }
 
-class _StateIcon extends State<StateIcon> {
+class _StateIcon<T> extends State<StateIcon<T>> {
 
-  Color _color = Colors.grey;
-
-  _setStateModel() {
-    _color = widget.color;
-    _state['feeling'] = widget.value;
+  _onPushed() {
+    setState(() {
+      _state[widget.type] = widget.value;
+      if (widget.onChanged != null) 
+        widget.onChanged(widget.value);
+    });
   }
 
   @override
@@ -692,8 +721,10 @@ class _StateIcon extends State<StateIcon> {
     return Container(
       margin: EdgeInsets.all(10.0),
       child: IconButton(
-        icon: Icon(widget.icon, color: _color,),
-        onPressed: _setStateModel(), 
+        icon: Icon(widget.icon, 
+          color: (widget.groupValue == widget.value || !_state.containsKey(widget.type)) ? widget.color : Colors.grey,
+        ),
+        onPressed: _onPushed, 
       ),
     );
   }
