@@ -11,9 +11,17 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPage extends State<RegisterPage> {
 
   int _currentFeeling;
-  void _handleFeeling(int e) => setState(() {_currentFeeling = e;}); 
+  void _handleFeeling(int e) => setState(() {_currentFeeling = e;});
   int _currentCondition;
-  void _handleCondition(int e) => setState(() {_currentCondition = e;}); 
+  void _handleCondition(int e) => setState(() {_currentCondition = e;});
+  bool _currentBreakfast;
+  void _handleBreakfast(bool e) => setState(() {_currentBreakfast = e;});
+  bool _currentLunch;
+  void _handleLunch(bool e) => setState(() {_currentLunch = e;});
+  bool _currentDinner;
+  void _handleDinner(bool e) => setState(() {_currentDinner = e;});
+  bool _currentSnack;
+  void _handleSnack(bool e) => setState(() {_currentSnack = e;});
 
   @override
   void initState() {
@@ -297,12 +305,13 @@ class _RegisterPage extends State<RegisterPage> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_up,
-                      color: Colors.orange[700],
-                    ),
+                  StateIcon(
+                    type: 'ateBreakfast',
+                    groupValue: _currentBreakfast,
+                    value: true,
+                    color: Colors.orange[700],
+                    icon: Icons.thumb_up,
+                    onChanged: _handleBreakfast,
                   ),
                   Text(
                     'あり',
@@ -312,12 +321,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_down,
-                      color: Colors.blue[800],
-                    ),
+                  StateIcon(
+                    type: 'ateBreakfast',
+                    groupValue: _currentBreakfast,
+                    value: false,
+                    color: Colors.blue[800],
+                    icon: Icons.thumb_down,
+                    onChanged: _handleBreakfast,
                   ),
                   Text(
                     'なし',
@@ -359,12 +369,13 @@ class _RegisterPage extends State<RegisterPage> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_up,
-                      color: Colors.orange[700],
-                    ),
+                  StateIcon(
+                    type: 'ateLunch',
+                    groupValue: _currentLunch,
+                    value: true,
+                    color: Colors.orange[700],
+                    icon: Icons.thumb_up,
+                    onChanged: _handleLunch,
                   ),
                   Text(
                     'あり',
@@ -374,12 +385,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_down,
-                      color: Colors.blue[800],
-                    ),
+                  StateIcon(
+                    type: 'ateLunch',
+                    groupValue: _currentLunch,
+                    value: false,
+                    color: Colors.blue[800],
+                    icon: Icons.thumb_up,
+                    onChanged: _handleLunch,
                   ),
                   Text(
                     'なし',
@@ -421,12 +433,13 @@ class _RegisterPage extends State<RegisterPage> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_up,
-                      color: Colors.orange[700],
-                    ),
+                  StateIcon(
+                    type: 'ateDinner',
+                    groupValue: _currentDinner,
+                    value: true,
+                    color: Colors.orange[700],
+                    icon: Icons.thumb_up,
+                    onChanged: _handleDinner,
                   ),
                   Text(
                     'あり',
@@ -436,12 +449,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_down,
-                      color: Colors.blue[800],
-                    ),
+                  StateIcon(
+                    type: 'ateDinner',
+                    groupValue: _currentDinner,
+                    value: false,
+                    color: Colors.blue[800],
+                    icon: Icons.thumb_down,
+                    onChanged: _handleDinner,
                   ),
                   Text(
                     'なし',
@@ -483,12 +497,13 @@ class _RegisterPage extends State<RegisterPage> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_up,
-                      color: Colors.orange[700],
-                    ),
+                  StateIcon(
+                    type: 'ateSnack',
+                    groupValue: _currentSnack,
+                    value: true,
+                    color: Colors.orange[700],
+                    icon: Icons.thumb_up,
+                    onChanged: _handleSnack,
                   ),
                   Text(
                     'あり',
@@ -498,12 +513,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Icon(
-                      Icons.thumb_down,
-                      color: Colors.blue[800],
-                    ),
+                  StateIcon(
+                    type: 'ateSnack',
+                    groupValue: _currentSnack,
+                    value: false,
+                    color: Colors.blue[800],
+                    icon: Icons.thumb_down,
+                    onChanged: _handleSnack,
                   ),
                   Text(
                     'なし',
