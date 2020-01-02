@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'appbar.dart';
 
+Map<String, dynamic> _state = new Map<String, dynamic>();
+
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPage createState() => _RegisterPage();
@@ -22,6 +24,81 @@ class _RegisterPage extends State<RegisterPage> {
   void _handleDinner(bool e) => setState(() {_currentDinner = e;});
   bool _currentSnack;
   void _handleSnack(bool e) => setState(() {_currentSnack = e;});
+
+  List<Widget> _goodPointFields = [
+    Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        '良かったこと（+ボタンで増やせる）',
+        textAlign: TextAlign.right,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
+      ),
+    ),
+    TextField(
+      enabled: true,
+      maxLengthEnforced: true,
+      style: TextStyle(color: Colors.black),
+      obscureText: false,
+      maxLines: 1,
+      decoration: const InputDecoration(
+        icon: Icon(
+          Icons.thumb_up,
+          color: Colors.orange,
+        ),
+        hintText: 'クララが立った',
+      )
+    ),
+    TextField(
+      enabled: true,
+      maxLengthEnforced: true,
+      style: TextStyle(color: Colors.black),
+      obscureText: false,
+      maxLines: 1,
+      decoration: const InputDecoration(
+        icon: Icon(
+          Icons.thumb_up,
+          color: Colors.orange,
+        ),
+        hintText: 'ソロモンに帰ってきた',
+      )
+    ),
+    TextField(
+      enabled: true,
+      maxLengthEnforced: true,
+      style: TextStyle(color: Colors.black),
+      obscureText: false,
+      maxLines: 1,
+      decoration: const InputDecoration(
+        icon: Icon(
+          Icons.thumb_up,
+          color: Colors.orange,
+        ),
+        hintText: '俺がその幻想をぶち殺す',
+      )
+    )
+  ];
+  _addField() {
+    setState(() {
+      _goodPointFields.add(
+        TextField(
+        enabled: true,
+        maxLengthEnforced: true,
+        style: TextStyle(color: Colors.black),
+        obscureText: false,
+        maxLines: 1,
+        decoration: const InputDecoration(
+          icon: Icon(
+            Icons.thumb_up,
+            color: Colors.orange,
+          ),
+        )
+        )
+      );
+    });
+  }
 
   @override
   void initState() {
@@ -545,61 +622,11 @@ class _RegisterPage extends State<RegisterPage> {
             border:
                 new Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
         child: Column(children: <Widget>[
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              '良かったこと（+ボタンで増やせる）',
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-              ),
-            ),
-          ),
-          TextField(
-              enabled: true,
-              maxLengthEnforced: true,
-              style: TextStyle(color: Colors.black),
-              obscureText: false,
-              maxLines: 1,
-              decoration: const InputDecoration(
-                icon: Icon(
-                  Icons.thumb_up,
-                  color: Colors.orange,
-                ),
-                hintText: 'クララが立った',
-              )),
-          TextField(
-              enabled: true,
-              maxLengthEnforced: true,
-              style: TextStyle(color: Colors.black),
-              obscureText: false,
-              maxLines: 1,
-              decoration: const InputDecoration(
-                icon: Icon(
-                  Icons.thumb_up,
-                  color: Colors.orange,
-                ),
-                hintText: 'ソロモンに帰ってきた',
-              )),
-          TextField(
-              enabled: true,
-              maxLengthEnforced: true,
-              style: TextStyle(color: Colors.black),
-              obscureText: false,
-              maxLines: 1,
-              decoration: const InputDecoration(
-                icon: Icon(
-                  Icons.thumb_up,
-                  color: Colors.orange,
-                ),
-                hintText: '俺がその幻想をぶち殺す',
-              ))
-        ]),
+          Column(children: _goodPointFields,),
+          IconButton(icon: Icon(Icons.add), onPressed: () {_addField();},)
+        ],),
       ),
-      onTap: () {
-        print("onTap called.");
-      },
+      onTap: () {},
     );
   }
 
@@ -668,6 +695,7 @@ class _RegisterPage extends State<RegisterPage> {
       },
     );
   }
+
 
   Widget _itemOther() {
     return GestureDetector(
@@ -745,5 +773,3 @@ class _StateIcon<T> extends State<StateIcon<T>> {
     );
   }
 }
-
-Map<String, dynamic> _state = new Map<String, dynamic>();
