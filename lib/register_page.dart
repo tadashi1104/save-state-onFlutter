@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:save_state_on_flutter/db_provider.dart';
 import 'appbar.dart';
+import 'models/model.dart';
 
 Map<String, dynamic> _state = new Map<String, dynamic>();
 
@@ -25,6 +27,13 @@ class _RegisterPage extends State<RegisterPage> {
   bool _currentSnack;
   void _handleSnack(bool e) => setState(() {_currentSnack = e;});
 
+  // staticにしないと使えなかった ⇒ どちらもクラス変数のため
+  static List<TextEditingController> goodPointControllerList = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+  ];
+
   List<Widget> _goodPointFields = [
     Align(
       alignment: Alignment.centerLeft,
@@ -43,6 +52,7 @@ class _RegisterPage extends State<RegisterPage> {
       style: TextStyle(color: Colors.black),
       obscureText: false,
       maxLines: 1,
+      controller: goodPointControllerList[0],
       decoration: const InputDecoration(
         icon: Icon(
           Icons.thumb_up,
@@ -57,6 +67,7 @@ class _RegisterPage extends State<RegisterPage> {
       style: TextStyle(color: Colors.black),
       obscureText: false,
       maxLines: 1,
+      controller: goodPointControllerList[1],
       decoration: const InputDecoration(
         icon: Icon(
           Icons.thumb_up,
@@ -71,6 +82,7 @@ class _RegisterPage extends State<RegisterPage> {
       style: TextStyle(color: Colors.black),
       obscureText: false,
       maxLines: 1,
+      controller: goodPointControllerList[2],
       decoration: const InputDecoration(
         icon: Icon(
           Icons.thumb_up,
@@ -82,24 +94,31 @@ class _RegisterPage extends State<RegisterPage> {
   ];
   _addGoodField() {
     setState(() {
+      goodPointControllerList.add(new TextEditingController());
       _goodPointFields.add(
         TextField(
-        enabled: true,
-        maxLengthEnforced: true,
-        style: TextStyle(color: Colors.black),
-        obscureText: false,
-        maxLines: 1,
-        decoration: const InputDecoration(
-          icon: Icon(
-            Icons.thumb_up,
-            color: Colors.orange,
-          ),
-        )
+          enabled: true,
+          maxLengthEnforced: true,
+          style: TextStyle(color: Colors.black),
+          obscureText: false,
+          maxLines: 1,
+          controller: goodPointControllerList[goodPointControllerList.length - 1],
+          decoration: const InputDecoration(
+            icon: Icon(
+              Icons.thumb_up,
+              color: Colors.orange,
+            ),
+          )
         )
       );
     });
   }
 
+  static List<TextEditingController> badPointControllerList = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+  ];
   List<Widget> _badPointFields = [
     Align(
       alignment: Alignment.centerLeft,
@@ -118,6 +137,7 @@ class _RegisterPage extends State<RegisterPage> {
       style: TextStyle(color: Colors.black),
       obscureText: false,
       maxLines: 1,
+      controller: badPointControllerList[0],
       decoration: const InputDecoration(
         icon: Icon(
           Icons.thumb_down,
@@ -131,6 +151,7 @@ class _RegisterPage extends State<RegisterPage> {
       style: TextStyle(color: Colors.black),
       obscureText: false,
       maxLines: 1,
+      controller: badPointControllerList[1],
       decoration: const InputDecoration(
         icon: Icon(
           Icons.thumb_down,
@@ -144,6 +165,7 @@ class _RegisterPage extends State<RegisterPage> {
       style: TextStyle(color: Colors.black),
       obscureText: false,
       maxLines: 1,
+      controller: badPointControllerList[2],
       decoration: const InputDecoration(
         icon: Icon(
           Icons.thumb_down,
@@ -154,22 +176,62 @@ class _RegisterPage extends State<RegisterPage> {
   ];
   _addBadField() {
     setState(() {
+      badPointControllerList.add(TextEditingController());
       _badPointFields.add(
         TextField(
-        enabled: true,
-        maxLengthEnforced: true,
-        style: TextStyle(color: Colors.black),
-        obscureText: false,
-        maxLines: 1,
-        decoration: const InputDecoration(
-          icon: Icon(
-            Icons.thumb_down,
-            color: Colors.blue,
-          ),
-        )
+          enabled: true,
+          maxLengthEnforced: true,
+          style: TextStyle(color: Colors.black),
+          obscureText: false,
+          maxLines: 1,
+          controller: badPointControllerList[badPointControllerList.length - 1],
+          decoration: const InputDecoration(
+            icon: Icon(
+              Icons.thumb_down,
+              color: Colors.blue,
+            ),
+          )
         )
       );
     });
+  }
+
+  final otherController = TextEditingController();
+
+  PushedRegistration() async {
+    final goodPoints = List<Map<String, dynamic>>();
+    final badPoints = List<Map<String, dynamic>>();
+
+    goodPointControllerList.where((controller) => controller.text != null).forEach((goodPoint) => () {
+      Map<String, dynamic> point = {'point' : goodPoint.text};
+      goodPoints.add(point);
+    });
+    _state['goodPoints'] = goodPoints;
+
+    badPointControllerList.where((controller) => controller.text != null).forEach((badPoint) => () {
+      Map<String, dynamic> point = {'point' : badPoint.text};
+      badPoints.add(point);
+    });
+    _state['badPoints'] = badPoints;
+
+    _state['other'] = otherController.text;
+
+    var state = new States.fromMap(_state);
+
+    await DBProvider.db.insertState(state);    
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    goodPointControllerList.clear();
+    goodPointControllerList.add(TextEditingController());
+    goodPointControllerList.add(TextEditingController());
+    goodPointControllerList.add(TextEditingController());
+    badPointControllerList.clear();
+    badPointControllerList.add(TextEditingController());
+    badPointControllerList.add(TextEditingController());
+    badPointControllerList.add(TextEditingController());
   }
 
   @override
@@ -184,6 +246,7 @@ class _RegisterPage extends State<RegisterPage> {
       // drawer: MyDrawer(),
       appBar: ReigsterAppBar(
         title: 'Register',
+        function: PushedRegistration
       ),
       body: _buildRegisterList(),
     );
@@ -312,9 +375,7 @@ class _RegisterPage extends State<RegisterPage> {
           )
         ]),
       ),
-      onTap: () {
-        print("onTap called.");
-      },
+      onTap: () {},
     );
   }
 
@@ -424,9 +485,7 @@ class _RegisterPage extends State<RegisterPage> {
           )
         ]),
       ),
-      onTap: () {
-        print("onTap called.");
-      },
+      onTap: () {},
     );
   }
 
@@ -488,9 +547,7 @@ class _RegisterPage extends State<RegisterPage> {
           )
         ]),
       ),
-      onTap: () {
-        print("onTap called.");
-      },
+      onTap: () {},
     );
   }
 
@@ -552,9 +609,7 @@ class _RegisterPage extends State<RegisterPage> {
           )
         ]),
       ),
-      onTap: () {
-        print("onTap called.");
-      },
+      onTap: () {},
     );
   }
 
@@ -616,9 +671,7 @@ class _RegisterPage extends State<RegisterPage> {
           )
         ]),
       ),
-      onTap: () {
-        print("onTap called.");
-      },
+      onTap: () {},
     );
   }
 
@@ -680,9 +733,7 @@ class _RegisterPage extends State<RegisterPage> {
           )
         ]),
       ),
-      onTap: () {
-        print("onTap called.");
-      },
+      onTap: () {},
     );
   }
 
@@ -741,6 +792,7 @@ class _RegisterPage extends State<RegisterPage> {
           TextField(
             keyboardType: TextInputType.multiline,
             maxLines: 5,
+            controller: otherController,
             decoration: InputDecoration(
               contentPadding:
                   EdgeInsets.only(left: 8, top: 10), // Set new height here
