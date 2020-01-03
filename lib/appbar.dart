@@ -23,8 +23,9 @@ class _MyAppBar extends State<MyAppBar> {
 
 class ReigsterAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
+  final Function() function;
 
-  ReigsterAppBar({Key key, this.title}) : super(key: key);
+  ReigsterAppBar({Key key, this.title, this.function}) : super(key: key);
 
   @override
   _ReigsterAppBar createState() => _ReigsterAppBar();
@@ -45,7 +46,7 @@ class _ReigsterAppBar extends State<ReigsterAppBar> {
       actions: <Widget>[
         FlatButton(
           textColor: Colors.white,
-          onPressed: () {},
+          onPressed: () {widget.function();},
           child: Text("登録"),
           shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
         )

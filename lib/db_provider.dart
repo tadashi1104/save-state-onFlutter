@@ -33,6 +33,7 @@ class DBProvider {
           "ateLunch BIT,"
           "ateDinner BIT,"
           "ateSnack BIT,"
+          "other TEXT"
           ")");
       db.execute("CREATE TABLE GoodPoints ("
           "id INTEGER PRIMARY KEY,"
@@ -43,11 +44,6 @@ class DBProvider {
           "id INTEGER PRIMARY KEY,"
           "stateId INTEGER,"
           "point TEXT"
-          ")");
-      db.execute("CREATE TABLE Others ("
-          "id INTEGER PRIMARY KEY,"
-          "stateId INTEGER,"
-          "other TEXT"
           ")");
     });
   }
@@ -64,7 +60,6 @@ class DBProvider {
 
     state.goodPoints.forEach((goodPoint) => {insertGoodPoint(goodPoint, state.id)});
     state.badPoints.forEach((badPoint) => {insertBadPoint(badPoint, state.id)});
-    state.others.forEach((other) => {insertOther(other, state.id)});
   }
 
   Future<void> insertGoodPoint(GoodPoints item, int stateId) async {
@@ -88,19 +83,6 @@ class DBProvider {
     item.stateId = stateId;
     db.insert(
       "BadPonts",
-      item.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<void> insertOther(Others item, int stateId) async {
-    final Database db = await database;
-    var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM Others Where stateId = ?",
-        [stateId]);
-    item.id = max.length == 0 ? 1 : max.first["id"];
-    item.stateId = stateId;
-    db.insert(
-      "Others",
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -131,13 +113,6 @@ class DBProvider {
         updateBadPoint(badPoint)
       }
     });
-    state.others.forEach((other) => {
-      if (other.id == null) {
-        insertOther(other, stateId)
-      } else {
-        updateOther(other) 
-      }
-    });
   }
 
   Future<void> updateGoodPoint(GoodPoints goodPoint) async {
@@ -157,16 +132,6 @@ class DBProvider {
       badPoint.toMap(),
       where: "id = ?",
       whereArgs: [badPoint.id]
-    );
-  }
-
-  Future<void> updateOther(Others other) async {
-    final Database db = await database;
-    db.update(
-      "Others",
-      other.toMap(),
-      where: "id = ?",
-      whereArgs: [other.id]
     );
   }
 }
