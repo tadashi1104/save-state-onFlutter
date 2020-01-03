@@ -80,7 +80,7 @@ class _RegisterPage extends State<RegisterPage> {
       )
     )
   ];
-  _addField() {
+  _addGoodField() {
     setState(() {
       _goodPointFields.add(
         TextField(
@@ -93,6 +93,78 @@ class _RegisterPage extends State<RegisterPage> {
           icon: Icon(
             Icons.thumb_up,
             color: Colors.orange,
+          ),
+        )
+        )
+      );
+    });
+  }
+
+  List<Widget> _badPointFields = [
+    Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        '悪かったこと（+ボタンで増やせる）',
+        textAlign: TextAlign.right,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
+      ),
+    ),
+    TextField(
+      enabled: true,
+      maxLengthEnforced: true,
+      style: TextStyle(color: Colors.black),
+      obscureText: false,
+      maxLines: 1,
+      decoration: const InputDecoration(
+        icon: Icon(
+          Icons.thumb_down,
+          color: Colors.blue,
+        ),
+        hintText: '感染レベルがLevel 5',
+      )),
+    TextField(
+      enabled: true,
+      maxLengthEnforced: true,
+      style: TextStyle(color: Colors.black),
+      obscureText: false,
+      maxLines: 1,
+      decoration: const InputDecoration(
+        icon: Icon(
+          Icons.thumb_down,
+          color: Colors.blue,
+        ),
+        hintText: '信じてくれず、また死に戻り',
+      )),
+    TextField(
+      enabled: true,
+      maxLengthEnforced: true,
+      style: TextStyle(color: Colors.black),
+      obscureText: false,
+      maxLines: 1,
+      decoration: const InputDecoration(
+        icon: Icon(
+          Icons.thumb_down,
+          color: Colors.blue,
+        ),
+        hintText: '何股もかけて殺された',
+      )),
+  ];
+  _addBadField() {
+    setState(() {
+      _badPointFields.add(
+        TextField(
+        enabled: true,
+        maxLengthEnforced: true,
+        style: TextStyle(color: Colors.black),
+        obscureText: false,
+        maxLines: 1,
+        decoration: const InputDecoration(
+          icon: Icon(
+            Icons.thumb_down,
+            color: Colors.blue,
           ),
         )
         )
@@ -623,7 +695,7 @@ class _RegisterPage extends State<RegisterPage> {
                 new Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
         child: Column(children: <Widget>[
           Column(children: _goodPointFields,),
-          IconButton(icon: Icon(Icons.add), onPressed: () {_addField();},)
+          IconButton(icon: Icon(Icons.add), onPressed: () {_addGoodField();},)
         ],),
       ),
       onTap: () {},
@@ -638,61 +710,11 @@ class _RegisterPage extends State<RegisterPage> {
             border:
                 new Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
         child: Column(children: <Widget>[
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              '悪かったこと（+ボタンで増やせる）',
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-              ),
-            ),
-          ),
-          TextField(
-              enabled: true,
-              maxLengthEnforced: true,
-              style: TextStyle(color: Colors.black),
-              obscureText: false,
-              maxLines: 1,
-              decoration: const InputDecoration(
-                icon: Icon(
-                  Icons.thumb_down,
-                  color: Colors.blue,
-                ),
-                hintText: '感染レベルがLevel 5',
-              )),
-          TextField(
-              enabled: true,
-              maxLengthEnforced: true,
-              style: TextStyle(color: Colors.black),
-              obscureText: false,
-              maxLines: 1,
-              decoration: const InputDecoration(
-                icon: Icon(
-                  Icons.thumb_down,
-                  color: Colors.blue,
-                ),
-                hintText: '信じてくれず、また死に戻り',
-              )),
-          TextField(
-              enabled: true,
-              maxLengthEnforced: true,
-              style: TextStyle(color: Colors.black),
-              obscureText: false,
-              maxLines: 1,
-              decoration: const InputDecoration(
-                icon: Icon(
-                  Icons.thumb_down,
-                  color: Colors.blue,
-                ),
-                hintText: '何股もかけて殺された',
-              )),
-        ]),
+          Column(children: _badPointFields,),
+          IconButton(icon: Icon(Icons.add), onPressed: () {_addBadField();},)
+        ],),
       ),
-      onTap: () {
-        print("onTap called.");
-      },
+      onTap: () {},
     );
   }
 
