@@ -47,8 +47,6 @@ class States {
     "ateLunch": ateLunch,
     "ateDinner": ateDinner,
     "ateSnack": ateSnack,
-    "goodPoints" :goodPoints,
-    "badPoints" :badPoints,
     "other" :other
   };
 
@@ -79,6 +77,18 @@ class GoodPoints {
     "id": id,
   };
 
+  GoodPoints({
+    this.id,
+    this.stateId,
+    this.point,
+  });
+
+  factory GoodPoints.fromMap(Map<String, dynamic> json) => new GoodPoints(
+    id: json["id"],
+    stateId: json["stateId"],
+    point: json["point"],
+  );
+
   Map<String, dynamic> toMap() => {
     "id": id,
     "stateId": stateId,
@@ -94,6 +104,18 @@ class BadPoints {
   Map<String, dynamic> getPrimaryKey() => {
     "id": id,
   };
+
+  BadPoints({
+    this.id,
+    this.stateId,
+    this.point,
+  });
+
+  factory BadPoints.fromMap(Map<String, dynamic> json) => new BadPoints(
+    id: json["id"],
+    stateId: json["stateId"],
+    point: json["point"],
+  );
 
   Map<String, dynamic> toMap() => {
     "id": id,
