@@ -51,7 +51,7 @@ class DBProvider {
   Future<void> insertState(States state) async {
     final Database db = await database;
     var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM States");
-    state.id = max.length == 0 ? 1 : max.first["id"];
+    state.id = max.first["id"] == null ? 1 : max.first["id"];
     db.insert(
       "States",
       state.toMap(),
@@ -66,7 +66,7 @@ class DBProvider {
     final Database db = await database;
     var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM GoodPoints Where stateId = ?",
         [stateId]);
-    item.id = max.length == 0 ? 1 : max.first["id"];
+    item.id = max.first["id"] == null ? 1 : max.first["id"];
     item.stateId = stateId;
     db.insert(
       "GoodPoints",
@@ -79,7 +79,7 @@ class DBProvider {
     final Database db = await database;
     var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM BadPoints Where stateId = ?",
         [stateId]);
-    item.id = max.length == 0 ? 1 : max.first["id"];
+    item.id = max.first["id"] == null ? 1 : max.first["id"];
     item.stateId = stateId;
     db.insert(
       "BadPonts",

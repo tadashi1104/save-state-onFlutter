@@ -199,19 +199,15 @@ class _RegisterPage extends State<RegisterPage> {
   final otherController = TextEditingController();
 
   PushedRegistration() async {
-    final goodPoints = List<Map<String, dynamic>>();
-    final badPoints = List<Map<String, dynamic>>();
+    final goodPoints = List<GoodPoints>();
+    final badPoints = List<BadPoints>();
 
-    goodPointControllerList.where((controller) => controller.text != null).forEach((goodPoint) => () {
-      Map<String, dynamic> point = {'point' : goodPoint.text};
-      goodPoints.add(point);
-    });
+    goodPointControllerList.where((controller) => controller.text != "")
+      .forEach((goodPoint) => goodPoints.add(new GoodPoints.fromMap({'point' : goodPoint.text})));
     _state['goodPoints'] = goodPoints;
 
-    badPointControllerList.where((controller) => controller.text != null).forEach((badPoint) => () {
-      Map<String, dynamic> point = {'point' : badPoint.text};
-      badPoints.add(point);
-    });
+    badPointControllerList.where((controller) => controller.text != "")
+      .forEach((badPoint) => badPoints.add(new BadPoints.fromMap({'point' : badPoint.text})));
     _state['badPoints'] = badPoints;
 
     _state['other'] = otherController.text;
