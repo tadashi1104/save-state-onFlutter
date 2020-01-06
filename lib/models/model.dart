@@ -41,7 +41,7 @@ class States {
   
   Map<String, dynamic> toMap() => {
     "id": id,
-    "feeling": feeling,
+    // "feeling": feeling,
     "condition": condition,
     "ateBreakfast": ateBreakfast,
     "ateLunch": ateLunch,
