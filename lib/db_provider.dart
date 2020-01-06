@@ -27,7 +27,7 @@ class DBProvider {
         onCreate: (Database db, int version) async {
       db.execute("CREATE TABLE States ("
           "id INTEGER PRIMARY KEY,"
-          "feering INTEGER,"
+          "feeling INTEGER,"
           "condition INTEGER,"
           "ateBreakFast BIT,"
           "ateLunch BIT,"
@@ -82,7 +82,7 @@ class DBProvider {
     item.id = max.first["id"] == null ? 1 : max.first["id"];
     item.stateId = stateId;
     db.insert(
-      "BadPonts",
+      "BadPoints",
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
