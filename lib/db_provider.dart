@@ -33,7 +33,8 @@ class DBProvider {
           "ateLunch BIT,"
           "ateDinner BIT,"
           "ateSnack BIT,"
-          "other TEXT"
+          "other TEXT,"
+          "insertDateTime INTEGER"
           ")");
       db.execute("CREATE TABLE GoodPoints ("
           "id INTEGER PRIMARY KEY,"

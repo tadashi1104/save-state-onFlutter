@@ -13,6 +13,7 @@ class States {
   List<GoodPoints> goodPoints;
   List<BadPoints> badPoints;
   String other;
+  int insertDateTime;
 
   States({
     this.id,
@@ -25,6 +26,7 @@ class States {
     this.goodPoints,
     this.badPoints,
     this.other,
+    this.insertDateTime,
   });
 
   factory States.fromMap(Map<String, dynamic> json) => new States(
@@ -38,6 +40,7 @@ class States {
     goodPoints: json["goodPoints"],
     badPoints: json["badPoints"],
     other: json["other"],
+    insertDateTime: json["insertDateTime"]
   );
   
   Map<String, dynamic> toMap() => {
@@ -48,7 +51,8 @@ class States {
     "ateLunch": ateLunch,
     "ateDinner": ateDinner,
     "ateSnack": ateSnack,
-    "other" :other
+    "other": other,
+    "insertDateTime": insertDateTime
   };
 
   Map<String, dynamic> getPrimaryKey() => {
