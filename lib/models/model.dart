@@ -33,6 +33,7 @@ class States {
     condition: json["condition"],
     ateBreakfast: json["ateBreakfast"],
     ateLunch: json["ateLunch"],
+    ateDinner: json["ateDinner"],
     ateSnack: json["ateSnack"],
     goodPoints: json["goodPoints"],
     badPoints: json["badPoints"],
@@ -41,7 +42,7 @@ class States {
   
   Map<String, dynamic> toMap() => {
     "id": id,
-    // "feeling": feeling,
+    "feeling": feeling,
     "condition": condition,
     "ateBreakfast": ateBreakfast,
     "ateLunch": ateLunch,

@@ -22,7 +22,7 @@ class DBProvider {
 
   dynamic initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "TestDB.db");
+    String path = join(documentsDirectory.path, "StateDB.db");
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       db.execute("CREATE TABLE States ("
