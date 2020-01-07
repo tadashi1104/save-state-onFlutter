@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:save_state_on_flutter/db_provider.dart';
 import 'appbar.dart';
 import 'models/model.dart';
@@ -211,10 +212,13 @@ class _RegisterPage extends State<RegisterPage> {
     _state['badPoints'] = badPoints;
 
     _state['other'] = otherController.text;
+    _state['insertDateTime'] = int.parse(DateFormat('yyyyMMddHHmmss').format(DateTime.now()));
 
     var state = new States.fromMap(_state);
 
-    await DBProvider.db.insertState(state);    
+    DBProvider.db.insertState(state);    
+
+    Navigator.of(context).pop();
   }
 
   @override
