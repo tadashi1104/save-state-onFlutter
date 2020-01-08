@@ -35,8 +35,8 @@ class _CalendarPage extends State<CalendarPage> {
       weekendTextStyle: TextStyle(
         color: Colors.red,
       ),
+      // height: 320,
       weekFormat: false,
-      height: 280.0,
       selectedDateTime: _currentDate2,
       targetDateTime: _targetDateTime,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
@@ -114,12 +114,13 @@ class _CalendarPage extends State<CalendarPage> {
             ),
           ),
           Container(
+            height: 320,
             margin: EdgeInsets.symmetric(horizontal: 0.0),
             child: _calendarCarouselNoHeader,
           ),
           Container(
+            height: MediaQuery.of(context).size.height - 300,
             margin: EdgeInsets.symmetric(horizontal: 0.0),
-            height: 320,
             child: new Builder(builder: (BuildContext context) {
               return new CustomScrollView(
                 slivers: _buildSlivers(context),
@@ -134,7 +135,7 @@ class _CalendarPage extends State<CalendarPage> {
   List<Widget> _buildSlivers(BuildContext context) {
     List<Widget> slivers = new List<Widget>();
     int i = 1;
-    slivers.addAll(_buildLists(context, i, i += 11));
+    slivers.addAll(_buildLists(context, i, i += 6));
     return slivers;
   }
 
@@ -158,7 +159,7 @@ class _CalendarPage extends State<CalendarPage> {
               title: new Text('Today is Good #$i'),
               subtitle: Text('This is Subtitle. My name is suzuki.'),
             ),
-            childCount: 30,
+            childCount: 4,
           ),
         ),
       );
@@ -167,7 +168,7 @@ class _CalendarPage extends State<CalendarPage> {
 
   Widget _buildHeader(int index, {String text}) {
     return new Container(
-      height: 60.0,
+      height: 52.0,
       color: Colors.red[300],
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       alignment: Alignment.centerLeft,
