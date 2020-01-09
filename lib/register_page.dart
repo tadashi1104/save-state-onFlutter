@@ -199,7 +199,7 @@ class _RegisterPage extends State<RegisterPage> {
 
   final otherController = TextEditingController();
 
-  PushedRegistration() async {
+  Future<void> _pushedRegistration() async {
     final goodPoints = List<GoodPoints>();
     final badPoints = List<BadPoints>();
 
@@ -246,7 +246,7 @@ class _RegisterPage extends State<RegisterPage> {
       // drawer: MyDrawer(),
       appBar: ReigsterAppBar(
         title: 'Register',
-        function: PushedRegistration
+        function: _pushedRegistration
       ),
       body: _buildRegisterList(),
     );
@@ -837,7 +837,6 @@ class _StateIcon<T> extends State<StateIcon<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10.0),
       child: IconButton(
         icon: Icon(widget.icon, 
           color: (widget.groupValue == widget.value || !_state.containsKey(widget.type)) ? widget.color : Colors.grey,

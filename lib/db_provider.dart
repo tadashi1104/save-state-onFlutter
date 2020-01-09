@@ -49,6 +49,28 @@ class DBProvider {
     });
   }
 
+  Future<List<States>> getStateForDate(int date) async {
+    
+    final Database db = await database;
+    var tempStates = await db.rawQuery("Select * From States Where insertDateTime Like ?%", [date]);
+    List<States> states;
+
+    for (var state in tempStates) {
+      List<GoodPoints> goodPoints;
+      var tempGoodPoints = await db.rawQuery("Select * From GoodPoints Where stateId = ?", [state["id"]]);
+      tempGoodPoints.forEach((goodPoint) => goodPoints.add(GoodPoints.fromMap(goodPoint)));
+      List<BadPoints> badPoints;
+      var tempBadPoints = await db.rawQuery("Select * From BadPoints Where stateId = ?", [state["id"]]);
+      tempBadPoints.forEach((badPoint) => badPoints.add(BadPoints.fromMap(badPoint)));
+      state['GoodPoints'] = goodPoints;
+      state['BadPoints'] = badPoints;
+      states.add(States.fromMap(state));
+    }
+
+    return states;
+
+  } 
+
   Future<void> insertState(States state) async {
     final Database db = await database;
     var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM States");
