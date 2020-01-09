@@ -66,70 +66,74 @@ class _CalendarPage extends State<CalendarPage> {
       },
     );
 
-    return SingleChildScrollView(
-      child: Column(
+    return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(
-              top: 12.0,
-              bottom: 16.0,
-              left: 16.0,
-              right: 16.0,
-            ),
-            child: new Row(
-              children: <Widget>[
-                Expanded(
-                    child: Text(
-                  _currentMonth,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
+          Expanded(flex: 1,  
+            child: Container(
+              margin: EdgeInsets.only(
+                top: 12.0,
+                bottom: 12.0,
+                left: 16.0,
+                right: 16.0,
+              ),
+              child: new Row(
+                children: <Widget>[
+                  Expanded(
+                      child: Text(
+                    _currentMonth,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                    ),
+                  )),
+                  FlatButton(
+                    child: Text('PREV'),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month - 1);
+                        _currentMonth =
+                            DateFormat.yMMM(Language).format(_targetDateTime);
+                      });
+                    },
                   ),
-                )),
-                FlatButton(
-                  child: Text('PREV'),
-                  onPressed: () {
-                    setState(() {
-                      _targetDateTime = DateTime(
-                          _targetDateTime.year, _targetDateTime.month - 1);
-                      _currentMonth =
-                          DateFormat.yMMM(Language).format(_targetDateTime);
-                    });
-                  },
-                ),
-                FlatButton(
-                  child: Text('NEXT'),
-                  onPressed: () {
-                    setState(() {
-                      _targetDateTime = DateTime(
-                          _targetDateTime.year, _targetDateTime.month + 1);
-                      _currentMonth =
-                          DateFormat.yMMM(Language).format(_targetDateTime);
-                    });
-                  },
-                )
-              ],
-            ),
+                  FlatButton(
+                    child: Text('NEXT'),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month + 1);
+                        _currentMonth =
+                            DateFormat.yMMM(Language).format(_targetDateTime);
+                      });
+                    },
+                  )
+                ],
+              ),
+            )
           ),
-          Container(
-            height: 320,
-            margin: EdgeInsets.symmetric(horizontal: 0.0),
-            child: _calendarCarouselNoHeader,
+          Expanded(flex: 5, 
+            child: Container(
+              // height: 320,
+              margin: EdgeInsets.symmetric(horizontal: 0.0),
+              child: _calendarCarouselNoHeader,
+              ) 
           ),
-          Container(
-            height: MediaQuery.of(context).size.height - 300,
-            margin: EdgeInsets.symmetric(horizontal: 0.0),
-            child: new Builder(builder: (BuildContext context) {
-              return new CustomScrollView(
-                slivers: _buildSlivers(context),
-              );
-            }),
+          Expanded(flex: 4, 
+            child: Container(
+              // height: MediaQuery.of(context).size.height - 300,
+              margin: EdgeInsets.symmetric(horizontal: 0.0),
+              child: new Builder(builder: (BuildContext context) {
+                return new CustomScrollView(
+                  slivers: _buildSlivers(context),
+                );
+              }),
+            )
           )
         ],
-      ),
-    );
+      );
   }
 
   List<Widget> _buildSlivers(BuildContext context) {
