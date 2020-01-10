@@ -34,7 +34,7 @@ class DBProvider {
           "ateDinner BIT,"
           "ateSnack BIT,"
           "other TEXT,"
-          "insertDateTime INTEGER"
+          "insertDateTime TEXT"
           ")");
       db.execute("CREATE TABLE GoodPoints ("
           "id INTEGER PRIMARY KEY,"
@@ -49,22 +49,26 @@ class DBProvider {
     });
   }
 
-  Future<List<States>> getStateForDate(int date) async {
-    
-    final Database db = await database;
-    var tempStates = await db.rawQuery("Select * From States Where insertDateTime Like ?%", [date]);
-    List<States> states;
+  Future<List<States>> getStateForDate(String date) async {
 
+    final Database db = await database;
+    // var tempStates = await db.rawQuery("Select * From States Where insertDateTime Like '$date%'");
+    var tempStates = await db.query('States', 
+      where: "insertDateTime Like '$date%'"
+    );
+
+    List<States> states = new List<States>();
     for (var state in tempStates) {
-      List<GoodPoints> goodPoints;
-      var tempGoodPoints = await db.rawQuery("Select * From GoodPoints Where stateId = ?", [state["id"]]);
+      Map<String, dynamic> _state = Map<String, dynamic>.from(state);
+      List<GoodPoints> goodPoints = new List<GoodPoints>();
+      var tempGoodPoints = await db.query("GoodPoints", where: "stateId = ?", whereArgs: [state["id"]]);
       tempGoodPoints.forEach((goodPoint) => goodPoints.add(GoodPoints.fromMap(goodPoint)));
-      List<BadPoints> badPoints;
-      var tempBadPoints = await db.rawQuery("Select * From BadPoints Where stateId = ?", [state["id"]]);
+      List<BadPoints> badPoints = new List<BadPoints>();
+      var tempBadPoints = await db.query("BadPoints", where: "stateId = ?", whereArgs: [state["id"]]);
       tempBadPoints.forEach((badPoint) => badPoints.add(BadPoints.fromMap(badPoint)));
-      state['GoodPoints'] = goodPoints;
-      state['BadPoints'] = badPoints;
-      states.add(States.fromMap(state));
+      _state['GoodPoints'] = goodPoints;
+      _state['BadPoints'] = badPoints;
+      states.add(States.fromMap(_state));
     }
 
     return states;

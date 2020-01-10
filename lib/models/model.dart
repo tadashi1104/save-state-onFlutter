@@ -6,14 +6,14 @@ class States {
   int id;
   int feeling;
   int condition;
-  bool ateBreakfast;
-  bool ateLunch;
-  bool ateDinner;
-  bool ateSnack;
+  int ateBreakfast;
+  int ateLunch;
+  int ateDinner;
+  int ateSnack;
   List<GoodPoints> goodPoints;
   List<BadPoints> badPoints;
   String other;
-  int insertDateTime;
+  String insertDateTime;
 
   States({
     this.id,
