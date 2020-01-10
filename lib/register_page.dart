@@ -19,14 +19,14 @@ class _RegisterPage extends State<RegisterPage> {
   void _handleFeeling(int e) => setState(() {_currentFeeling = e;});
   int _currentCondition;
   void _handleCondition(int e) => setState(() {_currentCondition = e;});
-  bool _currentBreakfast;
-  void _handleBreakfast(bool e) => setState(() {_currentBreakfast = e;});
-  bool _currentLunch;
-  void _handleLunch(bool e) => setState(() {_currentLunch = e;});
-  bool _currentDinner;
-  void _handleDinner(bool e) => setState(() {_currentDinner = e;});
-  bool _currentSnack;
-  void _handleSnack(bool e) => setState(() {_currentSnack = e;});
+  int _currentBreakfast;
+  void _handleBreakfast(int e) => setState(() {_currentBreakfast = e;});
+  int _currentLunch;
+  void _handleLunch(int e) => setState(() {_currentLunch = e;});
+  int _currentDinner;
+  void _handleDinner(int e) => setState(() {_currentDinner = e;});
+  int _currentSnack;
+  void _handleSnack(int e) => setState(() {_currentSnack = e;});
 
   // staticにしないと使えなかった ⇒ どちらもクラス変数のため
   static List<TextEditingController> goodPointControllerList = [
@@ -212,7 +212,7 @@ class _RegisterPage extends State<RegisterPage> {
     _state['badPoints'] = badPoints;
 
     _state['other'] = otherController.text;
-    _state['insertDateTime'] = int.parse(DateFormat('yyyyMMddHHmmss').format(DateTime.now()));
+    _state['insertDateTime'] = (DateFormat('yyyyMMddTHHmmss').format(DateTime.now()));
 
     var state = new States.fromMap(_state);
 
@@ -516,7 +516,7 @@ class _RegisterPage extends State<RegisterPage> {
                   StateIcon(
                     type: 'ateBreakfast',
                     groupValue: _currentBreakfast,
-                    value: true,
+                    value: 1,
                     color: Colors.orange[700],
                     icon: Icons.thumb_up,
                     onChanged: _handleBreakfast,
@@ -532,7 +532,23 @@ class _RegisterPage extends State<RegisterPage> {
                   StateIcon(
                     type: 'ateBreakfast',
                     groupValue: _currentBreakfast,
-                    value: false,
+                    value: null,
+                    color: Colors.green,
+                    icon: Icons.thumbs_up_down,
+                    onChanged: _handleBreakfast,
+                  ),
+                  Text(
+                    'まだ',
+                    style: TextStyle(color: Colors.black, fontSize: 18.0),
+                  ),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  StateIcon(
+                    type: 'ateBreakfast',
+                    groupValue: _currentBreakfast,
+                    value: 0,
                     color: Colors.blue[800],
                     icon: Icons.thumb_down,
                     onChanged: _handleBreakfast,
@@ -578,7 +594,7 @@ class _RegisterPage extends State<RegisterPage> {
                   StateIcon(
                     type: 'ateLunch',
                     groupValue: _currentLunch,
-                    value: true,
+                    value: 1,
                     color: Colors.orange[700],
                     icon: Icons.thumb_up,
                     onChanged: _handleLunch,
@@ -594,7 +610,23 @@ class _RegisterPage extends State<RegisterPage> {
                   StateIcon(
                     type: 'ateLunch',
                     groupValue: _currentLunch,
-                    value: false,
+                    value: null,
+                    color: Colors.green,
+                    icon: Icons.thumbs_up_down,
+                    onChanged: _handleLunch,
+                  ),
+                  Text(
+                    'まだ',
+                    style: TextStyle(color: Colors.black, fontSize: 18.0),
+                  ),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  StateIcon(
+                    type: 'ateLunch',
+                    groupValue: _currentLunch,
+                    value: 0,
                     color: Colors.blue[800],
                     icon: Icons.thumb_up,
                     onChanged: _handleLunch,
@@ -640,7 +672,7 @@ class _RegisterPage extends State<RegisterPage> {
                   StateIcon(
                     type: 'ateDinner',
                     groupValue: _currentDinner,
-                    value: true,
+                    value: 1,
                     color: Colors.orange[700],
                     icon: Icons.thumb_up,
                     onChanged: _handleDinner,
@@ -656,7 +688,23 @@ class _RegisterPage extends State<RegisterPage> {
                   StateIcon(
                     type: 'ateDinner',
                     groupValue: _currentDinner,
-                    value: false,
+                    value: null,
+                    color: Colors.green,
+                    icon: Icons.thumbs_up_down,
+                    onChanged: _handleDinner,
+                  ),
+                  Text(
+                    'まだ',
+                    style: TextStyle(color: Colors.black, fontSize: 18.0),
+                  ),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  StateIcon(
+                    type: 'ateDinner',
+                    groupValue: _currentDinner,
+                    value: 0,
                     color: Colors.blue[800],
                     icon: Icons.thumb_down,
                     onChanged: _handleDinner,
@@ -702,7 +750,7 @@ class _RegisterPage extends State<RegisterPage> {
                   StateIcon(
                     type: 'ateSnack',
                     groupValue: _currentSnack,
-                    value: true,
+                    value: 1,
                     color: Colors.orange[700],
                     icon: Icons.thumb_up,
                     onChanged: _handleSnack,
@@ -718,7 +766,7 @@ class _RegisterPage extends State<RegisterPage> {
                   StateIcon(
                     type: 'ateSnack',
                     groupValue: _currentSnack,
-                    value: false,
+                    value: 0,
                     color: Colors.blue[800],
                     icon: Icons.thumb_down,
                     onChanged: _handleSnack,

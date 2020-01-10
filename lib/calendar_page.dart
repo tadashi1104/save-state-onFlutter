@@ -5,6 +5,9 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:save_state_on_flutter/db_provider.dart';
+
+import 'models/model.dart';
 
 const String Language = 'ja_JP';
 
@@ -19,9 +22,10 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPage extends State<CalendarPage> {
   DateTime _currentDate = DateTime.now();
-  DateTime _currentDate2 = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
   String _currentMonth = DateFormat.yMMM(Language).format(DateTime.now());
   DateTime _targetDateTime = DateTime.now();
+  List<States> _states;
 
   CalendarCarousel _calendarCarouselNoHeader;
 
@@ -29,15 +33,15 @@ class _CalendarPage extends State<CalendarPage> {
   Widget build(BuildContext context) {
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
       onDayPressed: (DateTime date, List<Event> events) {
-        this.setState(() => _currentDate2 = date);
-        events.forEach((event) => print(event.title));
+        this.setState(() => _selectedDate = date);
+        this.setState(() async => _states = await DBProvider.db.getStateForDate((DateFormat('yyyyMMdd').format(date))));
       },
       weekendTextStyle: TextStyle(
         color: Colors.red,
       ),
       // height: 320,
       weekFormat: false,
-      selectedDateTime: _currentDate2,
+      selectedDateTime: _selectedDate,
       targetDateTime: _targetDateTime,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
       markedDateCustomShapeBorder:
@@ -158,7 +162,7 @@ class _CalendarPage extends State<CalendarPage> {
                       child: new Text('${i + 1}'),
                       radius: 16,
                     ),
-                    Text(new DateFormat('HH:mm').format(DateTime.now())),
+                    Text(DateFormat('HH:mm').format(DateTime.now())),// DateFormat('HH:mm').format(DateTime.parse(_states[0].insertDateTime))),
                   ]),
               title: new Text('Today is Good #$i'),
               subtitle: Text('This is Subtitle. My name is suzuki.'),
@@ -177,7 +181,7 @@ class _CalendarPage extends State<CalendarPage> {
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       alignment: Alignment.centerLeft,
       child: new Text(
-        text ?? '2019年$index月',
+        text ?? DateFormat('yyyy年MM月').format(_selectedDate),
         style: const TextStyle(color: Colors.white),
       ),
     );
