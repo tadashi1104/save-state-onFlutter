@@ -25,16 +25,24 @@ class _CalendarPage extends State<CalendarPage> {
   DateTime _selectedDate = DateTime.now();
   String _currentMonth = DateFormat.yMMM(Language).format(DateTime.now());
   DateTime _targetDateTime = DateTime.now();
-  List<States> _states;
+  List<States> _states = List<States>();
 
   CalendarCarousel _calendarCarouselNoHeader;
+  Widget _stickyHeadersList;
 
   @override
   Widget build(BuildContext context) {
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
       onDayPressed: (DateTime date, List<Event> events) {
         this.setState(() => _selectedDate = date);
-        this.setState(() async => _states = await DBProvider.db.getStateForDate((DateFormat('yyyyMMdd').format(date))));
+        this.setState(() async {
+          _states = await DBProvider.db.getStateForDate((DateFormat('yyyyMMdd').format(date)));
+          _stickyHeadersList = Builder(builder: (BuildContext context) {
+                return CustomScrollView(
+                  slivers: _buildSlivers(context, _states),
+                );
+              });
+        });
       },
       weekendTextStyle: TextStyle(
         color: Colors.red,
@@ -129,45 +137,40 @@ class _CalendarPage extends State<CalendarPage> {
             child: Container(
               // height: MediaQuery.of(context).size.height - 300,
               margin: EdgeInsets.symmetric(horizontal: 0.0),
-              child: new Builder(builder: (BuildContext context) {
-                return new CustomScrollView(
-                  slivers: _buildSlivers(context),
-                );
-              }),
+              child: _stickyHeadersList,
             )
           )
         ],
       );
   }
 
-  List<Widget> _buildSlivers(BuildContext context) {
+  List<Widget> _buildSlivers(BuildContext context, List<States> states) {
     List<Widget> slivers = new List<Widget>();
-    int i = 1;
-    slivers.addAll(_buildLists(context, i, i += 6));
+    slivers.addAll(_buildLists(context, 1, 1, states));
     return slivers;
   }
 
-  List<Widget> _buildLists(BuildContext context, int firstIndex, int count) {
+  List<Widget> _buildLists(BuildContext context, int firstIndex, int count, List<States> states) {
     return List.generate(count, (sliverIndex) {
       sliverIndex += firstIndex;
       return new SliverStickyHeader(
         header: _buildHeader(sliverIndex),
         sliver: new SliverList(
           delegate: new SliverChildBuilderDelegate(
-            (context, i) => new ListTile(
+            (context, index) => new ListTile(
               leading: new Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     new CircleAvatar(
-                      child: new Text('${i + 1}'),
+                      child: new Text(DateFormat('d').format(DateTime.parse(states[index].insertDateTime))),
                       radius: 16,
                     ),
-                    Text(DateFormat('HH:mm').format(DateTime.now())),// DateFormat('HH:mm').format(DateTime.parse(_states[0].insertDateTime))),
+                    Text(DateFormat('HH:mm').format(DateTime.parse(states[index].insertDateTime))),
                   ]),
-              title: new Text('Today is Good #$i'),
-              subtitle: Text('This is Subtitle. My name is suzuki.'),
+              title: new Text('気分: ${states[index].feeling}、体調: ${states[index].condition}'),
+              subtitle: Text(states[index].other),
             ),
-            childCount: 4,
+            childCount: states.length == null ? 0 : states.length,
           ),
         ),
       );
