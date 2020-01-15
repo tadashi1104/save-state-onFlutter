@@ -49,6 +49,32 @@ class DBProvider {
     });
   }
 
+  Future<List<States>> getState() async {
+    
+    final Database db = await database;
+    // var tempStates = await db.rawQuery("Select * From States Where insertDateTime Like '$date%'");
+    var tempStates = await db.query('States', 
+      orderBy: 'insertDateTime Desc'
+    );
+
+    List<States> states = new List<States>();
+    for (var state in tempStates) {
+      Map<String, dynamic> _state = Map<String, dynamic>.from(state);
+      List<GoodPoints> goodPoints = new List<GoodPoints>();
+      var tempGoodPoints = await db.query("GoodPoints", where: "stateId = ?", whereArgs: [state["id"]]);
+      tempGoodPoints.forEach((goodPoint) => goodPoints.add(GoodPoints.fromMap(goodPoint)));
+      List<BadPoints> badPoints = new List<BadPoints>();
+      var tempBadPoints = await db.query("BadPoints", where: "stateId = ?", whereArgs: [state["id"]]);
+      tempBadPoints.forEach((badPoint) => badPoints.add(BadPoints.fromMap(badPoint)));
+      _state['GoodPoints'] = goodPoints;
+      _state['BadPoints'] = badPoints;
+      states.add(States.fromMap(_state));
+    }
+
+    return states;
+
+  }
+
   Future<List<States>> getStateForDate(String date) async {
 
     final Database db = await database;
