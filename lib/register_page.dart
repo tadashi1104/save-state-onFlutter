@@ -628,7 +628,7 @@ class _RegisterPage extends State<RegisterPage> {
                     groupValue: _currentLunch,
                     value: 0,
                     color: Colors.blue[800],
-                    icon: Icons.thumb_up,
+                    icon: Icons.thumb_down,
                     onChanged: _handleLunch,
                   ),
                   Text(
