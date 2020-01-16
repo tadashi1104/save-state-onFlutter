@@ -128,7 +128,7 @@ class _CalendarPage extends State<CalendarPage> {
               child: FutureBuilder(
                 future: DBProvider.db.getStateForDate((DateFormat('yyyyMMdd').format(_selectedDate))),
                 builder: (context, future) {
-                  return StaateList(states: future.data, date: _selectedDate);
+                  return StateList(states: future.data, date: _selectedDate);
                 },
               ) 
             )
