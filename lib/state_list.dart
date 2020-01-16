@@ -26,16 +26,16 @@ class _StateList extends State<StateList> {
 
   List<Widget> _buildSlivers(BuildContext context, List<States> states, DateTime date) {
     List<Widget> slivers = new List<Widget>();
-    var monthCount = states.map((state) => state.insertDateTime.substring(0, 5)).toSet().toList().length;
-    slivers.addAll(_buildLists(context, 1, monthCount, states, date));
+    var month = states.map((state) => DateTime.parse(state.insertDateTime.substring(0, 6) + "01")).toSet().toList();
+    slivers.addAll(_buildLists(context, 1, month.length, states, month));
     return slivers;
   }
 
-  List<Widget> _buildLists(BuildContext context, int firstIndex, int count, List<States> states, DateTime date) {
+  List<Widget> _buildLists(BuildContext context, int firstIndex, int count, List<States> states, List<DateTime> date) {
     return List.generate(count, (sliverIndex) {
       sliverIndex += firstIndex;
       return new SliverStickyHeader(
-        header: _buildHeader(sliverIndex, date),
+        header: _buildHeader(sliverIndex, date[sliverIndex - 1]),
         sliver: new SliverList(
           delegate: new SliverChildBuilderDelegate(
             (context, index) => new ListTile(
