@@ -6,10 +6,9 @@ import 'models/model.dart';
 
 class StateList extends StatefulWidget {
   final List<States> states;
-  final DateTime date;
 
   StateList({
-    Key key, @required this.states, @required this.date
+    Key key, @required this.states
   }) : super(key: key);
 
   @override
@@ -20,11 +19,11 @@ class _StateList extends State<StateList> {
   @override
   Widget build(BuildContext context) {
     return new CustomScrollView(
-      slivers: _buildSlivers(context, widget.states, widget.date),
+      slivers: _buildSlivers(context, widget.states),
     );
   }
 
-  List<Widget> _buildSlivers(BuildContext context, List<States> states, DateTime date) {
+  List<Widget> _buildSlivers(BuildContext context, List<States> states) {
     List<Widget> slivers = new List<Widget>();
     var month = states.map((state) => DateTime.parse(state.insertDateTime.substring(0, 6) + "01")).toSet().toList();
     slivers.addAll(_buildLists(context, 1, month.length, states, month));
