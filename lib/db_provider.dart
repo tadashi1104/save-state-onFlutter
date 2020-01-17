@@ -75,6 +75,19 @@ class DBProvider {
 
   }
 
+  Future<Map<String, dynamic>> getStateForId(int id) async {
+
+    final Database db = await database;
+    // var tempStates = await db.rawQuery("Select * From States Where insertDateTime Like '$date%'");
+    var states = await db.query('States', 
+      where: "id = ?",
+      whereArgs: [id]
+    );
+
+    return states.first;
+
+  } 
+
   Future<List<States>> getStateForDate(String date) async {
 
     final Database db = await database;
