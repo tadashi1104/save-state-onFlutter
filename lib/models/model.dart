@@ -52,7 +52,21 @@ class States {
     "ateDinner": ateDinner,
     "ateSnack": ateSnack,
     "other": other,
-    "insertDateTime": insertDateTime
+    "insertDateTime": insertDateTime,
+  };
+  
+  Map<String, dynamic> toMapAddPoints() => {
+    "id": id,
+    "feeling": feeling,
+    "condition": condition,
+    "ateBreakfast": ateBreakfast,
+    "ateLunch": ateLunch,
+    "ateDinner": ateDinner,
+    "ateSnack": ateSnack,
+    "goodPoints": goodPoints,
+    "badPoints": badPoints,
+    "other": other,
+    "insertDateTime": insertDateTime,
   };
 
   Map<String, dynamic> getPrimaryKey() => {

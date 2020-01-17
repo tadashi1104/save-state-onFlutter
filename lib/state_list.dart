@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:intl/intl.dart';
+import 'package:save_state_on_flutter/reference_page.dart';
 
 import 'models/model.dart';
 
@@ -47,8 +48,18 @@ class _StateList extends State<StateList> {
                     ),
                     Text(DateFormat('HH:mm').format(DateTime.parse(states[index].insertDateTime))),
                   ]),
-              title: new Text('気分: ${states[index].feeling}、体調: ${states[index].condition}'),
+              title: new Text('気分: ${states[index].feeling}、体調: ${states[index].condition}、朝食: ${states[index].ateBreakfast}、昼食: ${states[index].ateLunch}、夜食: ${states[index].ateDinner}、間食: ${states[index].ateSnack}'),
               subtitle: Text(states[index].other),
+              onTap:  () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ReferencePage(state: states[index].toMapAddPoints());
+                    },
+                    fullscreenDialog: true
+                  ),
+                );
+              },
             ),
             childCount: states.length == null ? 0 : states.length,
           ),

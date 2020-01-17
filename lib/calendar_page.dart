@@ -7,6 +7,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:save_state_on_flutter/db_provider.dart';
 import 'package:save_state_on_flutter/state_list.dart';
 
+import 'models/model.dart';
+
 const String Language = 'ja_JP';
 
 class CalendarPage extends StatefulWidget {
@@ -128,7 +130,7 @@ class _CalendarPage extends State<CalendarPage> {
               child: FutureBuilder(
                 future: DBProvider.db.getStateForDate((DateFormat('yyyyMMdd').format(_selectedDate))),
                 builder: (context, future) {
-                  return StateList(states: future.data);
+                  return StateList(states: future.hasData ? future.data : new List<States>());
                 },
               ) 
             )

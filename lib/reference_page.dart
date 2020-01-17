@@ -9,8 +9,8 @@ import 'models/model.dart';
 Map<String, dynamic> _state = new Map<String, dynamic>();
 
 class ReferencePage extends StatefulWidget {
-  final int id;
-  ReferencePage({this.id});
+  final Map<String, dynamic> state;
+  ReferencePage({this.state});
   @override
   _ReferencePage createState() => _ReferencePage();
 }
@@ -25,17 +25,13 @@ class _ReferencePage extends State<ReferencePage> {
   int _currentSnack;
 
   // staticにしないと使えなかった ⇒ どちらもクラス変数のため
-  static List<TextEditingController> goodPointControllerList = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ];
+  static List<TextEditingController> goodPointControllerList;
 
   List<Widget> _goodPointFields = [
     Align(
       alignment: Alignment.centerLeft,
       child: Text(
-        '良かったこと（+ボタンで増やせる）',
+        '良かったこと',
         textAlign: TextAlign.right,
         style: TextStyle(
           color: Colors.black,
@@ -43,81 +39,15 @@ class _ReferencePage extends State<ReferencePage> {
         ),
       ),
     ),
-    TextField(
-      enabled: true,
-      maxLengthEnforced: true,
-      style: TextStyle(color: Colors.black),
-      obscureText: false,
-      maxLines: 1,
-      controller: goodPointControllerList[0],
-      decoration: const InputDecoration(
-        icon: Icon(
-          Icons.thumb_up,
-          color: Colors.orange,
-        ),
-      )
-    ),
-    TextField(
-      enabled: true,
-      maxLengthEnforced: true,
-      style: TextStyle(color: Colors.black),
-      obscureText: false,
-      maxLines: 1,
-      controller: goodPointControllerList[1],
-      decoration: const InputDecoration(
-        icon: Icon(
-          Icons.thumb_up,
-          color: Colors.orange,
-        ),
-      )
-    ),
-    TextField(
-      enabled: true,
-      maxLengthEnforced: true,
-      style: TextStyle(color: Colors.black),
-      obscureText: false,
-      maxLines: 1,
-      controller: goodPointControllerList[2],
-      decoration: const InputDecoration(
-        icon: Icon(
-          Icons.thumb_up,
-          color: Colors.orange,
-        ),
-      )
-    )
   ];
-  _addGoodField() {
-    setState(() {
-      goodPointControllerList.add(new TextEditingController());
-      _goodPointFields.add(
-        TextField(
-          enabled: true,
-          maxLengthEnforced: true,
-          style: TextStyle(color: Colors.black),
-          obscureText: false,
-          maxLines: 1,
-          controller: goodPointControllerList[goodPointControllerList.length - 1],
-          decoration: const InputDecoration(
-            icon: Icon(
-              Icons.thumb_up,
-              color: Colors.orange,
-            ),
-          )
-        )
-      );
-    });
-  }
 
-  static List<TextEditingController> badPointControllerList = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ];
+  static List<TextEditingController> badPointControllerList;
+
   List<Widget> _badPointFields = [
     Align(
       alignment: Alignment.centerLeft,
       child: Text(
-        '悪かったこと（+ボタンで増やせる）',
+        '悪かったこと',
         textAlign: TextAlign.right,
         style: TextStyle(
           color: Colors.black,
@@ -125,69 +55,9 @@ class _ReferencePage extends State<ReferencePage> {
         ),
       ),
     ),
-    TextField(
-      enabled: true,
-      maxLengthEnforced: true,
-      style: TextStyle(color: Colors.black),
-      obscureText: false,
-      maxLines: 1,
-      controller: badPointControllerList[0],
-      decoration: const InputDecoration(
-        icon: Icon(
-          Icons.thumb_down,
-          color: Colors.blue,
-        ),
-      )),
-    TextField(
-      enabled: true,
-      maxLengthEnforced: true,
-      style: TextStyle(color: Colors.black),
-      obscureText: false,
-      maxLines: 1,
-      controller: badPointControllerList[1],
-      decoration: const InputDecoration(
-        icon: Icon(
-          Icons.thumb_down,
-          color: Colors.blue,
-        ),
-      )),
-    TextField(
-      enabled: true,
-      maxLengthEnforced: true,
-      style: TextStyle(color: Colors.black),
-      obscureText: false,
-      maxLines: 1,
-      controller: badPointControllerList[2],
-      decoration: const InputDecoration(
-        icon: Icon(
-          Icons.thumb_down,
-          color: Colors.blue,
-        ),
-      )),
   ];
-  _addBadField() {
-    setState(() {
-      badPointControllerList.add(TextEditingController());
-      _badPointFields.add(
-        TextField(
-          enabled: true,
-          maxLengthEnforced: true,
-          style: TextStyle(color: Colors.black),
-          obscureText: false,
-          maxLines: 1,
-          controller: badPointControllerList[badPointControllerList.length - 1],
-          decoration: const InputDecoration(
-            icon: Icon(
-              Icons.thumb_down,
-              color: Colors.blue,
-            ),
-          )
-        )
-      );
-    });
-  }
 
-  final otherController = TextEditingController();
+  TextEditingController otherController = TextEditingController();
 
   // Future<void> _pushedRegistration() async {
   //   final goodPoints = List<GoodPoints>();
@@ -216,24 +86,100 @@ class _ReferencePage extends State<ReferencePage> {
     super.dispose();
     goodPointControllerList.clear();
     goodPointControllerList.add(TextEditingController());
-    goodPointControllerList.add(TextEditingController());
-    goodPointControllerList.add(TextEditingController());
     badPointControllerList.clear();
-    badPointControllerList.add(TextEditingController());
-    badPointControllerList.add(TextEditingController());
     badPointControllerList.add(TextEditingController());
   }
 
   @override
-  void initState() async {
+  void initState()  {
     super.initState();
-    _state = await DBProvider.db.getStateForId(widget.id);
+    _state = widget.state;
     _currentFeeling = _state['feeling'];
     _currentCondition = _state['condition'];
     _currentBreakfast = _state['ateBreakFast'];
     _currentLunch = _state['ateLunch'];
     _currentDinner = _state['ateDinner'];
     _currentSnack = _state['ateSnack'];
+
+    List<GoodPoints> goodPoints = _state['goodPoints'];
+    List<BadPoints> badPoints = _state['badPoints'];
+
+    if (goodPoints == null) {
+      for (var i = 0; i < 3; ++i) {
+        _goodPointFields.add(TextField(
+          enabled: false,
+          maxLengthEnforced: true,
+          style: TextStyle(color: Colors.black),
+          obscureText: false,
+          maxLines: 1,
+          decoration: const InputDecoration(
+            icon: Icon(
+              Icons.thumb_up,
+              color: Colors.orange,
+            ),
+          ),
+        ));
+      }
+    }
+
+    goodPoints?.forEach((point) {
+      goodPointControllerList.add(TextEditingController(text: point.point));
+      _goodPointFields.add(
+      TextField(
+        enabled: false,
+        maxLengthEnforced: true,
+        style: TextStyle(color: Colors.black),
+        obscureText: false,
+        maxLines: 1,
+        controller: goodPointControllerList[goodPointControllerList.length - 1],
+        decoration: const InputDecoration(
+          icon: Icon(
+            Icons.thumb_up,
+            color: Colors.orange,
+          ),
+        ),
+      ));
+    });
+
+    if (badPoints == null) {
+      for (var i = 0; i < 3; ++i) {
+        _badPointFields.add(TextField(
+          enabled: false,
+          maxLengthEnforced: true,
+          style: TextStyle(color: Colors.black),
+          obscureText: false,
+          maxLines: 1,
+          decoration: const InputDecoration(
+            icon: Icon(
+              Icons.thumb_down,
+              color: Colors.blue,
+            ),
+          ),
+        ));
+      }
+    }
+
+    badPoints?.forEach((point) {
+      badPointControllerList.add(TextEditingController(text: point.point));
+      _badPointFields.add(
+      TextField(
+        enabled: false,
+        maxLengthEnforced: true,
+        style: TextStyle(color: Colors.black),
+        obscureText: false,
+        maxLines: 1,
+        controller: badPointControllerList[badPointControllerList.length - 1],
+        decoration: const InputDecoration(
+          icon: Icon(
+            Icons.thumb_down,
+            color: Colors.blue,
+          ),
+        ),
+      ));
+    });
+
+    otherController = new TextEditingController(text: _state["other"]);
+
   }
 
   @override
@@ -241,7 +187,7 @@ class _ReferencePage extends State<ReferencePage> {
     return Scaffold(
       // drawer: MyDrawer(),
       appBar: ReigsterAppBar(
-        title: 'Register',
+        title: 'Reference',
         function: null
       ),
       body: _buildRegisterList(),
@@ -790,7 +736,6 @@ class _ReferencePage extends State<ReferencePage> {
                 new Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
         child: Column(children: <Widget>[
           Column(children: _goodPointFields,),
-          IconButton(icon: Icon(Icons.add), onPressed: () {_addGoodField();},)
         ],),
       ),
       onTap: () {},
@@ -806,7 +751,6 @@ class _ReferencePage extends State<ReferencePage> {
                 new Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
         child: Column(children: <Widget>[
           Column(children: _badPointFields,),
-          IconButton(icon: Icon(Icons.add), onPressed: () {_addBadField();},)
         ],),
       ),
       onTap: () {},
@@ -834,6 +778,7 @@ class _ReferencePage extends State<ReferencePage> {
             ),
           ),
           TextField(
+            enabled: false,
             keyboardType: TextInputType.multiline,
             maxLines: 5,
             controller: otherController,
@@ -841,7 +786,6 @@ class _ReferencePage extends State<ReferencePage> {
               contentPadding:
                   EdgeInsets.only(left: 8, top: 10), // Set new height here
               border: OutlineInputBorder(),
-              hintText: "やったね",
             ),
           )
         ]),
