@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:save_state_on_flutter/db_provider.dart';
 
+import 'models/model.dart';
 import 'state_list.dart';
 
 class ListPage extends StatefulWidget {
@@ -14,7 +15,7 @@ class _ListPage extends State<ListPage> {
     return FutureBuilder(
       future: DBProvider.db.getState(),
       builder: (context, future) {
-        return StateList(states: future.data);
+        return StateList(states: future.hasData ? future.data : new List<States>());
       },
     ); 
   }

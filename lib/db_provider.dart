@@ -84,7 +84,18 @@ class DBProvider {
       whereArgs: [id]
     );
 
-    return states.first;
+    var state = states.first;
+
+    List<GoodPoints> goodPoints = new List<GoodPoints>();
+    var tempGoodPoints = await db.query("GoodPoints", where: "stateId = ?", whereArgs: [state["id"]]);
+    tempGoodPoints.forEach((goodPoint) => goodPoints.add(GoodPoints.fromMap(goodPoint)));
+    List<BadPoints> badPoints = new List<BadPoints>();
+    var tempBadPoints = await db.query("BadPoints", where: "stateId = ?", whereArgs: [state["id"]]);
+    tempBadPoints.forEach((badPoint) => badPoints.add(BadPoints.fromMap(badPoint)));
+    state['GoodPoints'] = goodPoints;
+    state['BadPoints'] = badPoints;
+
+    return state;
 
   } 
 
@@ -100,10 +111,10 @@ class DBProvider {
     for (var state in tempStates) {
       Map<String, dynamic> _state = Map<String, dynamic>.from(state);
       List<GoodPoints> goodPoints = new List<GoodPoints>();
-      var tempGoodPoints = await db.query("GoodPoints", where: "stateId = ?", whereArgs: [state["id"]]);
+      var tempGoodPoints = await db.query("GoodPoints", where: "stateId = ?", whereArgs: [_state["id"]]);
       tempGoodPoints.forEach((goodPoint) => goodPoints.add(GoodPoints.fromMap(goodPoint)));
       List<BadPoints> badPoints = new List<BadPoints>();
-      var tempBadPoints = await db.query("BadPoints", where: "stateId = ?", whereArgs: [state["id"]]);
+      var tempBadPoints = await db.query("BadPoints", where: "stateId = ?", whereArgs: [_state["id"]]);
       tempBadPoints.forEach((badPoint) => badPoints.add(BadPoints.fromMap(badPoint)));
       _state['GoodPoints'] = goodPoints;
       _state['BadPoints'] = badPoints;
@@ -124,8 +135,8 @@ class DBProvider {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    state.goodPoints.forEach((goodPoint) => {insertGoodPoint(goodPoint, state.id)});
-    state.badPoints.forEach((badPoint) => {insertBadPoint(badPoint, state.id)});
+    state.goodPoints.forEach((goodPoint) async => {await insertGoodPoint(goodPoint, state.id)});
+    state.badPoints.forEach((badPoint) async => {await insertBadPoint(badPoint, state.id)});
   }
 
   Future<void> insertGoodPoint(GoodPoints item, int stateId) async {

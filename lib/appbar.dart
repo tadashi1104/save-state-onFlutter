@@ -42,8 +42,8 @@ class _ReigsterAppBar extends State<ReigsterAppBar> {
       //   icon: new Icon(Icons.arrow_back, color: Colors.white),
       //   onPressed: () => Navigator.of(context).pop(),
       // ),
-      title: Text('Register'),
-      actions: <Widget>[
+      title: Text(widget.title),
+      actions: widget.function == null ? null : <Widget>[
         FlatButton(
           textColor: Colors.white,
           onPressed: () {widget.function();},
