@@ -29,10 +29,10 @@ class DBProvider {
           "id INTEGER PRIMARY KEY,"
           "feeling INTEGER,"
           "condition INTEGER,"
-          "ateBreakFast BIT,"
-          "ateLunch BIT,"
-          "ateDinner BIT,"
-          "ateSnack BIT,"
+          "ateBreakfast INTEGER,"
+          "ateLunch INTEGER,"
+          "ateDinner INTEGER,"
+          "ateSnack INTEGER,"
           "other TEXT,"
           "insertDateTime TEXT"
           ")");
@@ -92,8 +92,8 @@ class DBProvider {
     List<BadPoints> badPoints = new List<BadPoints>();
     var tempBadPoints = await db.query("BadPoints", where: "stateId = ?", whereArgs: [state["id"]]);
     tempBadPoints.forEach((badPoint) => badPoints.add(BadPoints.fromMap(badPoint)));
-    state['GoodPoints'] = goodPoints;
-    state['BadPoints'] = badPoints;
+    state['goodPoints'] = goodPoints;
+    state['badPoints'] = badPoints;
 
     return state;
 
@@ -104,7 +104,8 @@ class DBProvider {
     final Database db = await database;
     // var tempStates = await db.rawQuery("Select * From States Where insertDateTime Like '$date%'");
     var tempStates = await db.query('States', 
-      where: "insertDateTime Like '$date%'"
+      where: "insertDateTime Like '$date%'",
+      orderBy: 'insertDateTime Desc'
     );
 
     List<States> states = new List<States>();
@@ -129,7 +130,7 @@ class DBProvider {
     final Database db = await database;
     var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM States");
     state.id = max.first["id"] == null ? 1 : max.first["id"];
-    db.insert(
+    await db.insert(
       "States",
       state.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -145,7 +146,7 @@ class DBProvider {
         [stateId]);
     item.id = max.first["id"] == null ? 1 : max.first["id"];
     item.stateId = stateId;
-    db.insert(
+    await db.insert(
       "GoodPoints",
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -158,7 +159,7 @@ class DBProvider {
         [stateId]);
     item.id = max.first["id"] == null ? 1 : max.first["id"];
     item.stateId = stateId;
-    db.insert(
+    await db.insert(
       "BadPoints",
       item.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,

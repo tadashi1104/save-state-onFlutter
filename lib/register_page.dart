@@ -205,11 +205,11 @@ class _RegisterPage extends State<RegisterPage> {
 
     goodPointControllerList.where((controller) => controller.text != "")
       .forEach((goodPoint) => goodPoints.add(new GoodPoints.fromMap({'point' : goodPoint.text})));
-    _state['goodPoints'] = goodPoints;
+    _state['GoodPoints'] = goodPoints;
 
     badPointControllerList.where((controller) => controller.text != "")
       .forEach((badPoint) => badPoints.add(new BadPoints.fromMap({'point' : badPoint.text})));
-    _state['badPoints'] = badPoints;
+    _state['BadPoints'] = badPoints;
 
     _state['other'] = otherController.text;
     _state['insertDateTime'] = (DateFormat('yyyyMMddTHHmmss').format(DateTime.now()));
