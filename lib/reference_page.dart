@@ -25,7 +25,7 @@ class _ReferencePage extends State<ReferencePage> {
   int _currentSnack;
 
   // staticにしないと使えなかった ⇒ どちらもクラス変数のため
-  static List<TextEditingController> goodPointControllerList;
+  static List<TextEditingController> goodPointControllerList = new List<TextEditingController>();
 
   List<Widget> _goodPointFields = [
     Align(
@@ -41,7 +41,7 @@ class _ReferencePage extends State<ReferencePage> {
     ),
   ];
 
-  static List<TextEditingController> badPointControllerList;
+  static List<TextEditingController> badPointControllerList = new List<TextEditingController>();
 
   List<Widget> _badPointFields = [
     Align(
@@ -96,7 +96,7 @@ class _ReferencePage extends State<ReferencePage> {
     _state = widget.state;
     _currentFeeling = _state['feeling'];
     _currentCondition = _state['condition'];
-    _currentBreakfast = _state['ateBreakFast'];
+    _currentBreakfast = _state['ateBreakfast'];
     _currentLunch = _state['ateLunch'];
     _currentDinner = _state['ateDinner'];
     _currentSnack = _state['ateSnack'];
@@ -123,7 +123,7 @@ class _ReferencePage extends State<ReferencePage> {
     }
 
     goodPoints?.forEach((point) {
-      goodPointControllerList.add(TextEditingController(text: point.point));
+      goodPointControllerList.add(new TextEditingController(text: point.point));
       _goodPointFields.add(
       TextField(
         enabled: false,
@@ -160,7 +160,7 @@ class _ReferencePage extends State<ReferencePage> {
     }
 
     badPoints?.forEach((point) {
-      badPointControllerList.add(TextEditingController(text: point.point));
+      badPointControllerList.add(new TextEditingController(text: point.point));
       _badPointFields.add(
       TextField(
         enabled: false,

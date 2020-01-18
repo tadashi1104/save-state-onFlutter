@@ -37,8 +37,8 @@ class States {
     ateLunch: json["ateLunch"],
     ateDinner: json["ateDinner"],
     ateSnack: json["ateSnack"],
-    goodPoints: json["goodPoints"],
-    badPoints: json["badPoints"],
+    goodPoints: json["GoodPoints"],
+    badPoints: json["BadPoints"],
     other: json["other"],
     insertDateTime: json["insertDateTime"]
   );
