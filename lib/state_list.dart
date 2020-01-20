@@ -51,7 +51,7 @@ class _StateList extends State<StateList> {
                     ),
                     Text(DateFormat('HH:mm').format(DateTime.parse(states[index].insertDateTime))),
                   ]),
-              title: new Text('気分: ${fiveName[states[index].feeling == null ? 0 : states[index].feeling]}、体調: ${fiveName[states[index].condition == null ? 0 : states[index].condition]}、朝食: ${threeName[states[index].ateBreakfast == null ? 2 : states[index].ateBreakfast]}、昼食: ${threeName[states[index].ateLunch == null ? 2 : states[index].ateLunch]}、夜食: ${threeName[states[index].ateDinner == null ? 2 : states[index].ateDinner]}、間食: ${threeName[states[index].ateSnack]}'),
+              title: new Text('気分: ${fiveName[states[index].feeling == null ? 0 : states[index].feeling]}、体調: ${fiveName[states[index].condition == null ? 0 : states[index].condition]}、朝食: ${threeName[states[index].ateBreakfast == null ? 2 : states[index].ateBreakfast]}、昼食: ${threeName[states[index].ateLunch == null ? 2 : states[index].ateLunch]}、夜食: ${threeName[states[index].ateDinner == null ? 2 : states[index].ateDinner]}、間食: ${threeName[states[index].ateSnack == null ? 2 : states[index].ateSnack]}'),
               subtitle: Text(states[index].other),
               onTap:  () {
                 Navigator.of(context).push(
