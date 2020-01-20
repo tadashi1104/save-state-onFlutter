@@ -136,15 +136,13 @@ class DBProvider {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    state.goodPoints.forEach((goodPoint) async => {await insertGoodPoint(goodPoint, state.id)});
-    state.badPoints.forEach((badPoint) async => {await insertBadPoint(badPoint, state.id)});
+    state.goodPoints.asMap().forEach((index, goodPoint) async => await insertGoodPoint(goodPoint, state.id, index));
+    state.badPoints.asMap().forEach((index, badPoint) async => await insertBadPoint(badPoint, state.id, index));
   }
 
-  Future<void> insertGoodPoint(GoodPoints item, int stateId) async {
+  Future<void> insertGoodPoint(GoodPoints item, int stateId, int id) async {
     final Database db = await database;
-    var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM GoodPoints Where stateId = ?",
-        [stateId]);
-    item.id = max.first["id"] == null ? 1 : max.first["id"];
+    item.id = id;
     item.stateId = stateId;
     await db.insert(
       "GoodPoints",
@@ -153,11 +151,9 @@ class DBProvider {
     );
   }
 
-  Future<void> insertBadPoint(BadPoints item, int stateId) async {
+  Future<void> insertBadPoint(BadPoints item, int stateId, int id) async {
     final Database db = await database;
-    var max = await db.rawQuery("SELECT MAX(id)+1 as id FROM BadPoints Where stateId = ?",
-        [stateId]);
-    item.id = max.first["id"] == null ? 1 : max.first["id"];
+    item.id = id;
     item.stateId = stateId;
     await db.insert(
       "BadPoints",
@@ -177,16 +173,16 @@ class DBProvider {
     );
 
     int stateId = state.id;
-    state.goodPoints.forEach((goodPoint) => {
+    state.goodPoints.asMap().forEach((index, goodPoint) => {
       if (goodPoint.id == null) {
-        insertGoodPoint(goodPoint, stateId)
+        insertGoodPoint(goodPoint, stateId, index)
       } else {
         updateGoodPoint(goodPoint)
       }
     });
-    state.badPoints.forEach((badPoint) => {
+    state.badPoints.asMap().forEach((index, badPoint) => {
       if (badPoint.id == null) {
-        insertBadPoint(badPoint, stateId)
+        insertBadPoint(badPoint, stateId, index)
       } else {
         updateBadPoint(badPoint)
       }
