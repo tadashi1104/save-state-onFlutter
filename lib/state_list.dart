@@ -30,6 +30,7 @@ class _StateList extends State<StateList> {
   List<Widget> _buildSlivers(BuildContext context, List<States> states) {
     List<Widget> slivers = new List<Widget>();
     var month = states.map((state) => DateTime.parse(state.insertDateTime.substring(0, 6) + "01")).toSet().toList();
+    if (month.length == 0) month.add(DateTime.now());
     slivers.addAll(_buildLists(context, 1, month.length, states, month));
     return slivers;
   }
