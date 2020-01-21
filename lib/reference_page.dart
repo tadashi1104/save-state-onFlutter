@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:intl/intl.dart';
-import 'package:save_state_on_flutter/db_provider.dart';
 import 'appbar.dart';
 import 'models/model.dart';
 
@@ -813,14 +811,6 @@ class StateIcon<T> extends StatefulWidget {
 }
 
 class _StateIcon<T> extends State<StateIcon<T>> {
-
-  _onPushed() {
-    // setState(() {
-    //   // _state[widget.type] = widget.value;
-    //   if (widget.onChanged != null) 
-    //     // widget.onChanged(widget.value);
-    // });
-  }
 
   @override
   Widget build(BuildContext context) {
