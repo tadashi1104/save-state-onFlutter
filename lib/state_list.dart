@@ -10,9 +10,10 @@ const List<String> threeName = ["なし","あり","まだ"];
 
 class StateList extends StatefulWidget {
   final List<States> states;
+  final DateTime date;
 
   StateList({
-    Key key, @required this.states
+    Key key, @required this.states, this.date,
   }) : super(key: key);
 
   @override
@@ -23,14 +24,14 @@ class _StateList extends State<StateList> {
   @override
   Widget build(BuildContext context) {
     return new CustomScrollView(
-      slivers: _buildSlivers(context, widget.states),
+      slivers: _buildSlivers(context, widget.states, widget.date),
     );
   }
 
-  List<Widget> _buildSlivers(BuildContext context, List<States> states) {
+  List<Widget> _buildSlivers(BuildContext context, List<States> states, DateTime date) {
     List<Widget> slivers = new List<Widget>();
     var month = states.map((state) => DateTime.parse(state.insertDateTime.substring(0, 6) + "01")).toSet().toList();
-    if (month.length == 0) month.add(DateTime.now());
+    if (month.length == 0) month.add(date);
     slivers.addAll(_buildLists(context, 1, month.length, states, month));
     return slivers;
   }
