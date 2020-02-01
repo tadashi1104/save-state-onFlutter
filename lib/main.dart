@@ -4,6 +4,7 @@ import 'package:save_state_on_flutter/calendar_page.dart';
 import 'package:save_state_on_flutter/register_page.dart';
 
 import 'appbar.dart';
+import 'auth_page.dart';
 import 'list_page.dart';
 
 void main() => runApp(new Main());
@@ -16,11 +17,13 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'save-sate',
-        theme: ThemeData(
-          primarySwatch: Colors.red,
-        ),
-        home: MainPage());
+      title: 'save-sate',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
+      // home: MainPage()
+      home: AuthPage(title: 'Auth Sample with Firebase')
+    );
   }
 }
 
