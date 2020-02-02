@@ -29,6 +29,7 @@ class _StateList extends State<StateList> {
   }
 
   List<Widget> _buildSlivers(BuildContext context, List<States> states, DateTime date) {
+    if (date == null) date = DateTime.now();
     List<Widget> slivers = new List<Widget>();
     var month = states.map((state) => DateTime.parse(state.insertDateTime.substring(0, 6) + "01")).toSet().toList();
     if (month.length == 0) month.add(date);
@@ -66,7 +67,10 @@ class _StateList extends State<StateList> {
                 );
               },
             ),
-            childCount: states.length == null ? 0 : states.length,
+            childCount: states.length == null ? 0 : states.where(
+              (state) => 
+              state.insertDateTime.substring(0, 6) == DateFormat("yyyyMM").format(date[sliverIndex - 1])
+            ).length,
           ),
         ),
       );
