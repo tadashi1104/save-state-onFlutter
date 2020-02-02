@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:save_state_on_flutter/common_const.dart';
+import 'package:save_state_on_flutter/main.dart';
 
 class AuthPage extends StatefulWidget {
   final String title;
@@ -61,6 +62,16 @@ class _AuthPageState extends State<AuthPage> {
     assert(user.uid == currentUser.uid);
 
     login();
+
+    if (result.status == TwitterLoginStatus.loggedIn) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          settings: RouteSettings(name: "/home"),
+          builder: (BuildContext context) => MainPage(),
+        ),
+      );
+    }
+
   }
 
   void signOutTwitter() async {
