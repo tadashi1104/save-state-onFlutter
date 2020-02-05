@@ -42,39 +42,43 @@ class _StateList extends State<StateList> {
       sliverIndex += firstIndex;
       return new SliverStickyHeader(
         header: _buildHeader(sliverIndex, date[sliverIndex - 1]),
-        sliver: new SliverList(
-          delegate: new SliverChildBuilderDelegate(
-            (context, index) => new ListTile(
-              leading: new Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    new CircleAvatar(
-                      child: new Text(DateFormat('d').format(DateTime.parse(states[index].insertDateTime))),
-                      radius: 16,
-                    ),
-                    Text(DateFormat('HH:mm').format(DateTime.parse(states[index].insertDateTime))),
-                  ]),
-              title: new Text('気分: ${fiveName[states[index].feeling == null ? 0 : states[index].feeling]}、体調: ${fiveName[states[index].condition == null ? 0 : states[index].condition]}、朝食: ${threeName[states[index].ateBreakfast == null ? 2 : states[index].ateBreakfast]}、昼食: ${threeName[states[index].ateLunch == null ? 2 : states[index].ateLunch]}、夜食: ${threeName[states[index].ateDinner == null ? 2 : states[index].ateDinner]}、間食: ${threeName[states[index].ateSnack == null ? 2 : states[index].ateSnack]}'),
-              subtitle: Text(states[index].other),
-              onTap:  () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return ReferencePage(state: states[index].toMapAddPoints());
-                    },
-                    fullscreenDialog: true
-                  ),
-                );
-              },
-            ),
-            childCount: states.length == null ? 0 : states.where(
-              (state) => 
-              state.insertDateTime.substring(0, 6) == DateFormat("yyyyMM").format(date[sliverIndex - 1])
-            ).length,
-          ),
-        ),
+        sliver: _buildSilverList(DateFormat('yyyyMM').format(date[sliverIndex - 1]), states),
       );
     });
+  }
+
+  Widget _buildSilverList(String date, List<States> statesAll) {
+
+    var states = statesAll.where((state) => state.insertDateTime.substring(0, 6) == date).toList();
+  
+    return new SliverList(
+      delegate: new SliverChildBuilderDelegate(
+        (context, index) => new ListTile(
+          leading: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new CircleAvatar(
+                  child: new Text(DateFormat('d').format(DateTime.parse(states[index].insertDateTime))),
+                  radius: 16,
+                ),
+                Text(DateFormat('HH:mm').format(DateTime.parse(states[index].insertDateTime))),
+              ]),
+          title: new Text('気分: ${fiveName[states[index].feeling == null ? 0 : states[index].feeling]}、体調: ${fiveName[states[index].condition == null ? 0 : states[index].condition]}、朝食: ${threeName[states[index].ateBreakfast == null ? 2 : states[index].ateBreakfast]}、昼食: ${threeName[states[index].ateLunch == null ? 2 : states[index].ateLunch]}、夜食: ${threeName[states[index].ateDinner == null ? 2 : states[index].ateDinner]}、間食: ${threeName[states[index].ateSnack == null ? 2 : states[index].ateSnack]}'),
+          subtitle: Text(states[index].other),
+          onTap:  () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) {
+                  return ReferencePage(state: states[index].toMapAddPoints());
+                },
+                fullscreenDialog: true
+              ),
+            );
+          },
+        ),
+        childCount: states.length == null ? 0 : states.length,
+      ),
+    );
   }
 
   Widget _buildHeader(int index, DateTime date, {String text}) {
