@@ -5,6 +5,7 @@ import 'package:save_state_on_flutter/register_page.dart';
 
 import 'appbar.dart';
 import 'auth_page.dart';
+import 'firestore-sample.dart';
 import 'list_page.dart';
 
 void main() => runApp(new Main());
@@ -21,8 +22,9 @@ class Main extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
+      home: FireStoreSample()
       // home: MainPage()
-      home: AuthPage(title: 'Auth Sample with Firebase')
+      // home: AuthPage(title: 'Auth Sample with Firebase')
     );
   }
 }
