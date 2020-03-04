@@ -38,35 +38,21 @@ class _AteSnackState extends State<AteSnack> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  CustomizedIconButton(
-                    currentValue: _value,
-                    value: 1,
-                    color: Colors.orange[700],
-                    icon: Icons.thumb_up,
-                    onValueChanged: _handle,
-                  ),
-                  Text(
-                    'あり',
-                    style: TextStyle(color: Colors.black, fontSize: 18.0),
-                  ),
-                ],
+              CustomizedIconButton(
+                currentValue: _value,
+                value: 1,
+                text: 'あり',
+                color: Colors.orange[700],
+                icon: Icons.thumb_up,
+                onValueChanged: _handle,
               ),
-              Column(
-                children: <Widget>[
-                  CustomizedIconButton(
-                    currentValue: _value,
-                    value: 0,
-                    color: Colors.blue[800],
-                    icon: Icons.thumb_down,
-                    onValueChanged: _handle,
-                  ),
-                  Text(
-                    'なし',
-                    style: TextStyle(color: Colors.black, fontSize: 18.0),
-                  ),
-                ],
+              CustomizedIconButton(
+                currentValue: _value,
+                value: 0,
+                text: 'なし',
+                color: Colors.blue[800],
+                icon: Icons.thumb_down,
+                onValueChanged: _handle,
               ),
             ],
           )
