@@ -20,6 +20,11 @@ class CustomizedIconButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var onPressed;
+    if (onValueChanged != null) {
+      onPressed = () => this.onValueChanged(this.value);
+    }
+
     return Container(
       child: Column(children: <Widget>[
         IconButton(
@@ -29,9 +34,7 @@ class CustomizedIconButton<T> extends StatelessWidget {
                 ? this.color
                 : Colors.grey, // TODO 初期値を要検討。
           ),
-          onPressed: () => {
-            if (this.onValueChanged != null) this.onValueChanged(this.value)
-          },
+          onPressed: onPressed,
         ),
         Text(
           this.text,
