@@ -38,18 +38,15 @@ class _RegisterPage extends State<RegisterPage> {
     super.initState();
     _state = new Map<String, dynamic>();
 
-    this._feeling = Feeling(
-        (value) => {debugPrint(value.toString()), _state["feeling"] = value});
-    this._condition = Condition(
-        (value) => {debugPrint(value.toString()), _state["condition"] = value});
-    this._ateBreakfast = AteBreakfast((value) =>
-        {debugPrint(value.toString()), _state["ateBreakfast"] = value});
-    this._ateLunch = AteLunch(
-        (value) => {debugPrint(value.toString()), _state["ateLunch"] = value});
-    this._ateDinner = AteDinner(
-        (value) => {debugPrint(value.toString()), _state["ateDinner"] = value});
-    this._ateSnack = AteSnack(
-        (value) => {debugPrint(value.toString()), _state["ateSnack"] = value});
+    this._feeling = Feeling(callback: (value) => _state["feeling"] = value);
+    this._condition =
+        Condition(callback: (value) => _state["condition"] = value);
+    this._ateBreakfast =
+        AteBreakfast(callback: (value) => _state["ateBreakfast"] = value);
+    this._ateLunch = AteLunch(callback: (value) => _state["ateLunch"] = value);
+    this._ateDinner =
+        AteDinner(callback: (value) => _state["ateDinner"] = value);
+    this._ateSnack = AteSnack(callback: (value) => _state["ateSnack"] = value);
     this._goodPointsTextFields = GoodPointTextFields(controllers: [
       TextEditingController(),
       TextEditingController(),
@@ -83,10 +80,10 @@ class _RegisterPage extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // drawer: MyDrawer(),
-      appBar: ReigsterAppBar(title: 'Register', function: _pushedRegistration),
-      body: ListView(
-        children: <Widget>[
+        // drawer: MyDrawer(),
+        appBar:
+            ReigsterAppBar(title: 'Register', function: _pushedRegistration),
+        body: ListView(children: <Widget>[
           _feeling,
           _condition,
           _ateBreakfast,
@@ -96,9 +93,7 @@ class _RegisterPage extends State<RegisterPage> {
           _goodPointsTextFields,
           _badPointsTextFields,
           _otherTextField
-        ],
-      ),
-    );
+        ]));
   }
 
   Future<void> _pushedRegistration() async {
